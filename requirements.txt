@@ -1,0 +1,8 @@
+# Dependencias de ejecución
+chromadb==1.5.9
+openai==2.54.0
+python-dotenv==1.2.2
+tiktoken==0.13.0
+
+# Dependencias de desarrollo
+pytest==9.1.1
