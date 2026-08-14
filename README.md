@@ -73,6 +73,25 @@ tests/      pruebas automáticas
 
 El código y la documentación se versionan. `.venv`, `.env`, cachés, índices locales de Chroma y resultados regenerables permanecen fuera de Git.
 
+## Tecnologías y propósito
+
+Estas herramientas forman parte del diseño del proyecto. La integración RAG todavía no está implementada ni se realizaron llamadas a OpenAI.
+
+| Tecnología | Rol dentro de QA Memory RAG | Para qué se usa |
+| --- | --- | --- |
+| Python 3.12 | Lenguaje principal | Ejecuta los scripts de carga, indexación, consulta y pruebas. |
+| OpenAI API | Embeddings y LLM | Convierte registros y consultas en vectores con `text-embedding-3-small`; más adelante, el LLM redactará una recomendación usando exclusivamente la evidencia recuperada. |
+| ChromaDB | Base de datos vectorial local | Guarda los vectores y permite encontrar bugs y test cases similares por significado. |
+| tiktoken | Conteo de tokens | Verifica que cada chunk respete el rango requerido de 50 a 500 tokens. |
+| python-dotenv | Configuración local segura | Lee las variables de `.env`, como `OPENAI_API_KEY`, sin escribirlas en el código ni en Git. |
+| pytest | Pruebas automatizadas | Comprueba el comportamiento de cada parte del proyecto antes de integrarla al flujo completo. |
+| Git y GitHub | Control de versiones | Conservan el historial del proyecto y permiten publicar el repositorio de entrega. |
+
+### Dos conceptos clave
+
+- **Embeddings:** números que representan el significado de un texto. Sirven para comparar una consulta con los bugs y test cases existentes.
+- **LLM:** modelo de lenguaje. En este proyecto será el componente de OpenAI que redacte la respuesta final a partir de los resultados recuperados; no debe inventar evidencia nueva.
+
 ## Límites de la primera versión
 
 - Toda la información será ficticia: no se usarán datos bancarios, personales ni incidentes reales.
