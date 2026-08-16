@@ -17,6 +17,7 @@ htmlcov/
 chroma_db/
 outputs/*
 !outputs/.gitkeep
+!outputs/sample_queries.json
 
 # Archivos del sistema operativo
 .DS_Store
