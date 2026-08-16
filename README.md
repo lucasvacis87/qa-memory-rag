@@ -2,10 +2,6 @@
 
 QA Memory RAG es una memoria histórica de QA para una aplicación ficticia de banca digital. Recibe una situación reportada por un tester, recupera bugs históricos y test cases existentes relacionados, y recomienda una regresión respaldada por esa evidencia. El objetivo es reducir la búsqueda manual entre antecedentes dispersos sin que el sistema invente bugs, IDs, pasos, resultados esperados ni cobertura nueva.
 
-## Estado
-
-Implementación en desarrollo. Este README define el contrato final del producto; el avance técnico se sigue en el [roadmap](docs/ROADMAP.md) sin alterar la interfaz documentada acá.
-
 ## Qué resuelve
 
 Un tester o QA Automation Engineer puede describir un incidente —por ejemplo, “la transferencia fue rechazada, pero se descontó el saldo”— y obtener:
