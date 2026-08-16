@@ -33,7 +33,7 @@ Situación QA
 - [Guardrails](docs/GUARDRAILS.md)
 - [Guía de trabajo para agentes](AGENTS.md)
 
-La consigna original se conserva en `Consignas Proyecto 2 RAG.docx` y su versión navegable está en [Consignas_proyecto.md](Consignas_proyecto.md). Ambas funcionan como referencia de evaluación.
+La consigna académica está disponible en [Consignas_proyecto.md](Consignas_proyecto.md) y funciona como referencia de evaluación.
 
 ## Preparación del entorno
 

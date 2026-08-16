@@ -1,6 +1,6 @@
 # Consignas Proyecto 2: RAG
 
-> Transcripción estructurada de `Consignas Proyecto 2 RAG.docx`. Esta es la consigna académica original; el alcance específico de QA Memory RAG se define en [`docs/PROJECT_BRIEF.md`](docs/PROJECT_BRIEF.md).
+> Transcripción estructurada de la consigna académica original. El alcance específico de QA Memory RAG se define en [`docs/PROJECT_BRIEF.md`](docs/PROJECT_BRIEF.md).
 
 ## Contexto y objetivos
 
