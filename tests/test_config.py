@@ -26,6 +26,19 @@ def test_validate_settings_returns_typed_valid_configuration() -> None:
     )
 
 
+def test_validate_settings_applies_optional_values() -> None:
+    settings = config.validate_settings({
+        **VALID_VALUES,
+        "CHROMA_PATH": "custom_index",
+        "COLLECTION_NAME": "custom_collection",
+        "RELEVANCE_THRESHOLD": "0.35",
+    })
+
+    assert settings.chroma_path == "custom_index"
+    assert settings.collection_name == "custom_collection"
+    assert settings.relevance_threshold == 0.35
+
+
 @pytest.mark.parametrize(
     ("variable", "invalid_value"),
     [
@@ -66,12 +79,21 @@ def test_load_settings_does_not_create_client_or_open_network_connection(
     monkeypatch.setattr(config, "load_dotenv", record_dotenv_load)
     monkeypatch.setattr(socket, "create_connection", forbid_network)
     monkeypatch.setattr(socket, "socket", forbid_network)
-    for name, value in VALID_VALUES.items():
+    environment = {
+        **VALID_VALUES,
+        "CHROMA_PATH": "custom_index",
+        "COLLECTION_NAME": "custom_collection",
+        "RELEVANCE_THRESHOLD": "0.35",
+    }
+    for name, value in environment.items():
         monkeypatch.setenv(name, value)
 
     settings = config.load_settings()
 
     assert settings.openai_api_key == "offline-test-key"
+    assert settings.chroma_path == "custom_index"
+    assert settings.collection_name == "custom_collection"
+    assert settings.relevance_threshold == 0.35
     assert load_dotenv_calls == [{"dotenv_path": Path.cwd() / ".env", "override": False}]
     source = inspect.getsource(config)
     assert "from openai" not in source

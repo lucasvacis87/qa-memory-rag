@@ -28,6 +28,7 @@ class QARecord:
     evidence_state: EvidenceState
 
     def metadata(self) -> dict[str, str]:
+        """Convierte el registro en metadata compatible con Chroma."""
         return {
             "id": self.id,
             "type": self.record_type,
@@ -55,6 +56,7 @@ class RetrievedChunk:
     metadata: dict[str, str]
 
     def public_dict(self) -> dict[str, Any]:
+        """Serializa un chunk recuperado para la respuesta pública."""
         return {
             "id": self.id,
             "type": self.record_type,
@@ -72,6 +74,7 @@ class RAGResponse:
     chunks_related: tuple[RetrievedChunk, ...]
 
     def public_dict(self) -> dict[str, Any]:
+        """Serializa la respuesta con el contrato exigido."""
         return {
             "user_question": self.user_question,
             "system_answer": self.system_answer,
@@ -79,6 +82,7 @@ class RAGResponse:
         }
 
     def assert_public_contract(self) -> None:
+        """Comprueba que no haya claves extra en la salida pública."""
         assert set(self.public_dict()) == {
             "user_question", "system_answer", "chunks_related"
         }

@@ -1,732 +1,665 @@
-{
-  "mode": "offline_deterministic",
-  "samples": [
-    {
-      "case_id": "UC-01",
-      "user_question": "El usuario se bloquea antes del quinto intento",
-      "system_answer": "La evidencia recuperada (BUG-AUT-001, BUG-PAG-003, TC-AUT-001, TC-TRF-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+[
+  {
+    "user_question": "El usuario se bloquea antes del quinto intento",
+    "system_answer": "La evidencia recuperada (BUG-AUT-001, BUG-PAG-003, TC-AUT-001, TC-TRF-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-AUT-001",
+        "type": "bug",
+        "module": "Autenticación",
+        "content": "BUG-AUT-001 | bug | módulo Autenticación. Bloqueo prematuro al cuarto intento. El contador de intentos fallidos se incrementa dos veces cuando la respuesta de credenciales inválidas tarda más de dos segundos. El usuario queda bloqueado al cuarto intento aunque la política funcional permite cinco. El incidente se reproduce con contraseñas erróneas consecutivas y se revierte al completar el proceso de desbloqueo administrativo. Relaciones: TC-AUT-001, TC-AUT-002. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/login. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de bloqueo prematuro al cuarto intento usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1442,
+        "metadata": {
+          "endpoint_or_operation": "POST /auth/login",
+          "evidence_state": "confirmado",
+          "functional_domain": "autenticación",
           "id": "BUG-AUT-001",
-          "type": "bug",
           "module": "Autenticación",
-          "content": "BUG-AUT-001 | bug | módulo Autenticación. Bloqueo prematuro al cuarto intento. El contador de intentos fallidos se incrementa dos veces cuando la respuesta de credenciales inválidas tarda más de dos segundos. El usuario queda bloqueado al cuarto intento aunque la política funcional permite cinco. El incidente se reproduce con contraseñas erróneas consecutivas y se revierte al completar el proceso de desbloqueo administrativo. Relaciones: TC-AUT-001, TC-AUT-002. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/login. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de bloqueo prematuro al cuarto intento usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1442,
-          "metadata": {
-            "endpoint_or_operation": "POST /auth/login",
-            "evidence_state": "confirmado",
-            "functional_domain": "autenticación",
-            "id": "BUG-AUT-001",
-            "module": "Autenticación",
-            "owner_team": "equipo QA Autenticación",
-            "related_ids": "TC-AUT-001,TC-AUT-002",
-            "service_or_api": "qa-banking-autenticacion",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de bloqueo prematuro al cuarto intento usando sólo los datos del registro",
-            "title": "Bloqueo prematuro al cuarto intento",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Autenticación",
+          "related_ids": "TC-AUT-001,TC-AUT-002",
+          "service_or_api": "qa-banking-autenticacion",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de bloqueo prematuro al cuarto intento usando sólo los datos del registro",
+          "title": "Bloqueo prematuro al cuarto intento",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-PAG-003",
+        "type": "bug",
+        "module": "Pago de servicios",
+        "content": "BUG-PAG-003 | bug | módulo Pago de servicios. Vencimiento interpretado en zona incorrecta. Una factura válida hasta el final del día se marca vencida varias horas antes por interpretar la fecha en UTC. La operación queda bloqueada aunque la fecha local todavía es válida. La cobertura relacionada compara el límite local antes y después del cambio de día. Relaciones: TC-PAG-004. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments/validate. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de vencimiento interpretado en zona incorrecta usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.0728,
+        "metadata": {
+          "endpoint_or_operation": "POST /payments/validate",
+          "evidence_state": "confirmado",
+          "functional_domain": "pago de servicios",
           "id": "BUG-PAG-003",
-          "type": "bug",
           "module": "Pago de servicios",
-          "content": "BUG-PAG-003 | bug | módulo Pago de servicios. Vencimiento interpretado en zona incorrecta. Una factura válida hasta el final del día se marca vencida varias horas antes por interpretar la fecha en UTC. La operación queda bloqueada aunque la fecha local todavía es válida. La cobertura relacionada compara el límite local antes y después del cambio de día. Relaciones: TC-PAG-004. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments/validate. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de vencimiento interpretado en zona incorrecta usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.0728,
-          "metadata": {
-            "endpoint_or_operation": "POST /payments/validate",
-            "evidence_state": "confirmado",
-            "functional_domain": "pago de servicios",
-            "id": "BUG-PAG-003",
-            "module": "Pago de servicios",
-            "owner_team": "equipo QA Pago de servicios",
-            "related_ids": "TC-PAG-004",
-            "service_or_api": "qa-banking-pago-de-servicios",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de vencimiento interpretado en zona incorrecta usando sólo los datos del registro",
-            "title": "Vencimiento interpretado en zona incorrecta",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Pago de servicios",
+          "related_ids": "TC-PAG-004",
+          "service_or_api": "qa-banking-pago-de-servicios",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de vencimiento interpretado en zona incorrecta usando sólo los datos del registro",
+          "title": "Vencimiento interpretado en zona incorrecta",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-AUT-001",
+        "type": "test_case",
+        "module": "Autenticación",
+        "content": "TC-AUT-001 | test_case | módulo Autenticación. Cinco intentos fallidos y bloqueo. Ingresar credenciales inválidas cuatro veces y confirmar que la cuenta siga habilitada. Ejecutar un quinto intento inválido, verificar el bloqueo y comprobar que un sexto intento no inicie sesión. Registrar el estado visible y la respuesta del servicio sin crear resultados esperados adicionales. Relaciones: BUG-AUT-001. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/login. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de cinco intentos fallidos y bloqueo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1215,
+        "metadata": {
+          "endpoint_or_operation": "POST /auth/login",
+          "evidence_state": "confirmado",
+          "functional_domain": "autenticación",
           "id": "TC-AUT-001",
-          "type": "test_case",
           "module": "Autenticación",
-          "content": "TC-AUT-001 | test_case | módulo Autenticación. Cinco intentos fallidos y bloqueo. Ingresar credenciales inválidas cuatro veces y confirmar que la cuenta siga habilitada. Ejecutar un quinto intento inválido, verificar el bloqueo y comprobar que un sexto intento no inicie sesión. Registrar el estado visible y la respuesta del servicio sin crear resultados esperados adicionales. Relaciones: BUG-AUT-001. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/login. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de cinco intentos fallidos y bloqueo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1215,
-          "metadata": {
-            "endpoint_or_operation": "POST /auth/login",
-            "evidence_state": "confirmado",
-            "functional_domain": "autenticación",
-            "id": "TC-AUT-001",
-            "module": "Autenticación",
-            "owner_team": "equipo QA Autenticación",
-            "related_ids": "BUG-AUT-001",
-            "service_or_api": "qa-banking-autenticacion",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de cinco intentos fallidos y bloqueo usando sólo los datos del registro",
-            "title": "Cinco intentos fallidos y bloqueo",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
-          "id": "TC-TRF-003",
+          "owner_team": "equipo QA Autenticación",
+          "related_ids": "BUG-AUT-001",
+          "service_or_api": "qa-banking-autenticacion",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de cinco intentos fallidos y bloqueo usando sólo los datos del registro",
+          "title": "Cinco intentos fallidos y bloqueo",
           "type": "test_case",
-          "module": "Transferencias",
-          "content": "TC-TRF-003 | test_case | módulo Transferencias. Comisión visible antes de confirmar. Solicitar una cotización con comisión, revisar el resumen y confirmar que importe principal, comisión y total sean visibles y coincidan con la respuesta. Cancelar antes de transferir cuando el objetivo sea sólo validar la información previa. Relaciones: BUG-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1177,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers/quote",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "TC-TRF-003",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "BUG-TRF-003",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro",
-            "title": "Comisión visible antes de confirmar",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
+      },
+      {
+        "id": "TC-TRF-003",
+        "type": "test_case",
+        "module": "Transferencias",
+        "content": "TC-TRF-003 | test_case | módulo Transferencias. Comisión visible antes de confirmar. Solicitar una cotización con comisión, revisar el resumen y confirmar que importe principal, comisión y total sean visibles y coincidan con la respuesta. Cancelar antes de transferir cuando el objetivo sea sólo validar la información previa. Relaciones: BUG-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1177,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers/quote",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
+          "id": "TC-TRF-003",
+          "module": "Transferencias",
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "BUG-TRF-003",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro",
+          "title": "Comisión visible antes de confirmar",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
       }
-    },
-    {
-      "case_id": "UC-02",
-      "user_question": "Una transferencia aprobada no aparece en movimientos",
-      "system_answer": "La evidencia recuperada (BUG-MOV-001, BUG-MOV-002, TC-MOV-001, TC-MOV-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "Una transferencia aprobada no aparece en movimientos",
+    "system_answer": "La evidencia recuperada (BUG-MOV-001, BUG-MOV-002, TC-MOV-001, TC-MOV-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-MOV-001",
+        "type": "bug",
+        "module": "Saldos y movimientos",
+        "content": "BUG-MOV-001 | bug | módulo Saldos y movimientos. Transferencia aprobada ausente en movimientos. Una transferencia aprobada actualiza el saldo disponible, pero no crea de inmediato el movimiento correspondiente. La diferencia permanece hasta refrescar la sesión. El bug documenta una inconsistencia de lectura entre saldo e historial y requiere comprobar ambos valores usando el mismo identificador de operación. Relaciones: TC-MOV-001, TC-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.4286,
+        "metadata": {
+          "endpoint_or_operation": "GET /accounts/movements",
+          "evidence_state": "confirmado",
+          "functional_domain": "saldos y movimientos",
           "id": "BUG-MOV-001",
-          "type": "bug",
           "module": "Saldos y movimientos",
-          "content": "BUG-MOV-001 | bug | módulo Saldos y movimientos. Transferencia aprobada ausente en movimientos. Una transferencia aprobada actualiza el saldo disponible, pero no crea de inmediato el movimiento correspondiente. La diferencia permanece hasta refrescar la sesión. El bug documenta una inconsistencia de lectura entre saldo e historial y requiere comprobar ambos valores usando el mismo identificador de operación. Relaciones: TC-MOV-001, TC-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.4286,
-          "metadata": {
-            "endpoint_or_operation": "GET /accounts/movements",
-            "evidence_state": "confirmado",
-            "functional_domain": "saldos y movimientos",
-            "id": "BUG-MOV-001",
-            "module": "Saldos y movimientos",
-            "owner_team": "equipo QA Saldos y movimientos",
-            "related_ids": "TC-MOV-001,TC-MOV-002",
-            "service_or_api": "qa-banking-saldos-y-movimientos",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro",
-            "title": "Transferencia aprobada ausente en movimientos",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Saldos y movimientos",
+          "related_ids": "TC-MOV-001,TC-MOV-002",
+          "service_or_api": "qa-banking-saldos-y-movimientos",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro",
+          "title": "Transferencia aprobada ausente en movimientos",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-MOV-002",
+        "type": "bug",
+        "module": "Saldos y movimientos",
+        "content": "BUG-MOV-002 | bug | módulo Saldos y movimientos. Movimiento duplicado al paginar. Al solicitar la segunda página del historial, el último movimiento de la primera página vuelve a aparecer como primer elemento. El saldo no se duplica, pero la interfaz muestra dos filas con el mismo identificador. La regresión debe controlar unicidad y continuidad entre páginas consecutivas. Relaciones: TC-MOV-002, TC-MOV-003. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements?page. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de movimiento duplicado al paginar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2565,
+        "metadata": {
+          "endpoint_or_operation": "GET /accounts/movements?page",
+          "evidence_state": "confirmado",
+          "functional_domain": "saldos y movimientos",
           "id": "BUG-MOV-002",
-          "type": "bug",
           "module": "Saldos y movimientos",
-          "content": "BUG-MOV-002 | bug | módulo Saldos y movimientos. Movimiento duplicado al paginar. Al solicitar la segunda página del historial, el último movimiento de la primera página vuelve a aparecer como primer elemento. El saldo no se duplica, pero la interfaz muestra dos filas con el mismo identificador. La regresión debe controlar unicidad y continuidad entre páginas consecutivas. Relaciones: TC-MOV-002, TC-MOV-003. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements?page. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de movimiento duplicado al paginar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2565,
-          "metadata": {
-            "endpoint_or_operation": "GET /accounts/movements?page",
-            "evidence_state": "confirmado",
-            "functional_domain": "saldos y movimientos",
-            "id": "BUG-MOV-002",
-            "module": "Saldos y movimientos",
-            "owner_team": "equipo QA Saldos y movimientos",
-            "related_ids": "TC-MOV-002,TC-MOV-003",
-            "service_or_api": "qa-banking-saldos-y-movimientos",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de movimiento duplicado al paginar usando sólo los datos del registro",
-            "title": "Movimiento duplicado al paginar",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Saldos y movimientos",
+          "related_ids": "TC-MOV-002,TC-MOV-003",
+          "service_or_api": "qa-banking-saldos-y-movimientos",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de movimiento duplicado al paginar usando sólo los datos del registro",
+          "title": "Movimiento duplicado al paginar",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-MOV-001",
+        "type": "test_case",
+        "module": "Saldos y movimientos",
+        "content": "TC-MOV-001 | test_case | módulo Saldos y movimientos. Operación aprobada aparece en historial. Crear una transferencia aprobada, capturar su identificador y consultar movimientos. Verificar que exista una sola entrada con importe y estado consistentes, y que el saldo refleje la misma operación. La prueba evita depender de refrescos manuales para observar el registro. Relaciones: BUG-MOV-001. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de operación aprobada aparece en historial usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.3977,
+        "metadata": {
+          "endpoint_or_operation": "GET /accounts/movements",
+          "evidence_state": "confirmado",
+          "functional_domain": "saldos y movimientos",
           "id": "TC-MOV-001",
-          "type": "test_case",
           "module": "Saldos y movimientos",
-          "content": "TC-MOV-001 | test_case | módulo Saldos y movimientos. Operación aprobada aparece en historial. Crear una transferencia aprobada, capturar su identificador y consultar movimientos. Verificar que exista una sola entrada con importe y estado consistentes, y que el saldo refleje la misma operación. La prueba evita depender de refrescos manuales para observar el registro. Relaciones: BUG-MOV-001. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de operación aprobada aparece en historial usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.3977,
-          "metadata": {
-            "endpoint_or_operation": "GET /accounts/movements",
-            "evidence_state": "confirmado",
-            "functional_domain": "saldos y movimientos",
-            "id": "TC-MOV-001",
-            "module": "Saldos y movimientos",
-            "owner_team": "equipo QA Saldos y movimientos",
-            "related_ids": "BUG-MOV-001",
-            "service_or_api": "qa-banking-saldos-y-movimientos",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de operación aprobada aparece en historial usando sólo los datos del registro",
-            "title": "Operación aprobada aparece en historial",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Saldos y movimientos",
+          "related_ids": "BUG-MOV-001",
+          "service_or_api": "qa-banking-saldos-y-movimientos",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de operación aprobada aparece en historial usando sólo los datos del registro",
+          "title": "Operación aprobada aparece en historial",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-MOV-003",
+        "type": "test_case",
+        "module": "Saldos y movimientos",
+        "content": "TC-MOV-003 | test_case | módulo Saldos y movimientos. Paginación sin movimientos repetidos. Cargar suficientes movimientos para dos páginas, consultar ambas de forma consecutiva y comparar identificadores. Ningún elemento de la primera página debe repetirse en la segunda, y el orden debe mantenerse según la fecha informada por la fuente. Relaciones: BUG-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements?page. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de paginación sin movimientos repetidos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.3124,
+        "metadata": {
+          "endpoint_or_operation": "GET /accounts/movements?page",
+          "evidence_state": "confirmado",
+          "functional_domain": "saldos y movimientos",
           "id": "TC-MOV-003",
-          "type": "test_case",
           "module": "Saldos y movimientos",
-          "content": "TC-MOV-003 | test_case | módulo Saldos y movimientos. Paginación sin movimientos repetidos. Cargar suficientes movimientos para dos páginas, consultar ambas de forma consecutiva y comparar identificadores. Ningún elemento de la primera página debe repetirse en la segunda, y el orden debe mantenerse según la fecha informada por la fuente. Relaciones: BUG-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements?page. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de paginación sin movimientos repetidos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.3124,
-          "metadata": {
-            "endpoint_or_operation": "GET /accounts/movements?page",
-            "evidence_state": "confirmado",
-            "functional_domain": "saldos y movimientos",
-            "id": "TC-MOV-003",
-            "module": "Saldos y movimientos",
-            "owner_team": "equipo QA Saldos y movimientos",
-            "related_ids": "BUG-MOV-002",
-            "service_or_api": "qa-banking-saldos-y-movimientos",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de paginación sin movimientos repetidos usando sólo los datos del registro",
-            "title": "Paginación sin movimientos repetidos",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "owner_team": "equipo QA Saldos y movimientos",
+          "related_ids": "BUG-MOV-002",
+          "service_or_api": "qa-banking-saldos-y-movimientos",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de paginación sin movimientos repetidos usando sólo los datos del registro",
+          "title": "Paginación sin movimientos repetidos",
+          "type": "test_case",
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
       }
-    },
-    {
-      "case_id": "UC-03",
-      "user_question": "Una transferencia rechazada descuenta el saldo",
-      "system_answer": "La evidencia recuperada (BUG-TRF-001, BUG-MOV-001, TC-TRF-007, TC-TRF-004) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "Una transferencia rechazada descuenta el saldo",
+    "system_answer": "La evidencia recuperada (BUG-TRF-001, BUG-MOV-001, TC-TRF-007, TC-TRF-004) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-TRF-001",
+        "type": "bug",
+        "module": "Transferencias",
+        "content": "BUG-TRF-001 | bug | módulo Transferencias. Transferencia rechazada descuenta saldo. Cuando el banco destino rechaza una transferencia, el débito queda aplicado y la reversión no se registra. El estado final informa rechazada, aunque el saldo disponible disminuye. Es un antecedente crítico: deben verificarse estado, saldo y movimiento compensatorio con el mismo identificador de transferencia. Relaciones: TC-TRF-004, TC-TRF-007. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de transferencia rechazada descuenta saldo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.5361,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
           "id": "BUG-TRF-001",
-          "type": "bug",
           "module": "Transferencias",
-          "content": "BUG-TRF-001 | bug | módulo Transferencias. Transferencia rechazada descuenta saldo. Cuando el banco destino rechaza una transferencia, el débito queda aplicado y la reversión no se registra. El estado final informa rechazada, aunque el saldo disponible disminuye. Es un antecedente crítico: deben verificarse estado, saldo y movimiento compensatorio con el mismo identificador de transferencia. Relaciones: TC-TRF-004, TC-TRF-007. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de transferencia rechazada descuenta saldo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.5361,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "BUG-TRF-001",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "TC-TRF-004,TC-TRF-007",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de transferencia rechazada descuenta saldo usando sólo los datos del registro",
-            "title": "Transferencia rechazada descuenta saldo",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "TC-TRF-004,TC-TRF-007",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de transferencia rechazada descuenta saldo usando sólo los datos del registro",
+          "title": "Transferencia rechazada descuenta saldo",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-MOV-001",
+        "type": "bug",
+        "module": "Saldos y movimientos",
+        "content": "BUG-MOV-001 | bug | módulo Saldos y movimientos. Transferencia aprobada ausente en movimientos. Una transferencia aprobada actualiza el saldo disponible, pero no crea de inmediato el movimiento correspondiente. La diferencia permanece hasta refrescar la sesión. El bug documenta una inconsistencia de lectura entre saldo e historial y requiere comprobar ambos valores usando el mismo identificador de operación. Relaciones: TC-MOV-001, TC-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1843,
+        "metadata": {
+          "endpoint_or_operation": "GET /accounts/movements",
+          "evidence_state": "confirmado",
+          "functional_domain": "saldos y movimientos",
           "id": "BUG-MOV-001",
-          "type": "bug",
           "module": "Saldos y movimientos",
-          "content": "BUG-MOV-001 | bug | módulo Saldos y movimientos. Transferencia aprobada ausente en movimientos. Una transferencia aprobada actualiza el saldo disponible, pero no crea de inmediato el movimiento correspondiente. La diferencia permanece hasta refrescar la sesión. El bug documenta una inconsistencia de lectura entre saldo e historial y requiere comprobar ambos valores usando el mismo identificador de operación. Relaciones: TC-MOV-001, TC-MOV-002. Dominio: saldos y movimientos. Servicio/API: qa-banking-saldos-y-movimientos. Operación: GET /accounts/movements. Owner: equipo QA Saldos y movimientos. Smoke sugerido: verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1843,
-          "metadata": {
-            "endpoint_or_operation": "GET /accounts/movements",
-            "evidence_state": "confirmado",
-            "functional_domain": "saldos y movimientos",
-            "id": "BUG-MOV-001",
-            "module": "Saldos y movimientos",
-            "owner_team": "equipo QA Saldos y movimientos",
-            "related_ids": "TC-MOV-001,TC-MOV-002",
-            "service_or_api": "qa-banking-saldos-y-movimientos",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro",
-            "title": "Transferencia aprobada ausente en movimientos",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Saldos y movimientos",
+          "related_ids": "TC-MOV-001,TC-MOV-002",
+          "service_or_api": "qa-banking-saldos-y-movimientos",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de transferencia aprobada ausente en movimientos usando sólo los datos del registro",
+          "title": "Transferencia aprobada ausente en movimientos",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TRF-007",
+        "type": "test_case",
+        "module": "Transferencias",
+        "content": "TC-TRF-007 | test_case | módulo Transferencias. Reversión de transferencia rechazada. Ejecutar el escenario ficticio de rechazo posterior a una autorización, recuperar los movimientos asociados y validar el asiento compensatorio. El total neto debe ser cero y los registros deben conservar el identificador de transferencia para trazabilidad. Relaciones: BUG-TRF-001. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: GET /transfers/{id}. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de reversión de transferencia rechazada usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2887,
+        "metadata": {
+          "endpoint_or_operation": "GET /transfers/{id}",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
           "id": "TC-TRF-007",
-          "type": "test_case",
           "module": "Transferencias",
-          "content": "TC-TRF-007 | test_case | módulo Transferencias. Reversión de transferencia rechazada. Ejecutar el escenario ficticio de rechazo posterior a una autorización, recuperar los movimientos asociados y validar el asiento compensatorio. El total neto debe ser cero y los registros deben conservar el identificador de transferencia para trazabilidad. Relaciones: BUG-TRF-001. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: GET /transfers/{id}. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de reversión de transferencia rechazada usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2887,
-          "metadata": {
-            "endpoint_or_operation": "GET /transfers/{id}",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "TC-TRF-007",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "BUG-TRF-001",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de reversión de transferencia rechazada usando sólo los datos del registro",
-            "title": "Reversión de transferencia rechazada",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "BUG-TRF-001",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de reversión de transferencia rechazada usando sólo los datos del registro",
+          "title": "Reversión de transferencia rechazada",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TRF-004",
+        "type": "test_case",
+        "module": "Transferencias",
+        "content": "TC-TRF-004 | test_case | módulo Transferencias. Rechazo no descuenta saldo. Registrar saldo inicial, provocar un rechazo controlado y consultar saldo final. Ambos saldos deben coincidir y el estado debe ser rechazado. Si hubo una reserva temporal, debe existir la reversión documentada con la misma operación antes de cerrar la validación. Relaciones: BUG-TRF-001. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de rechazo no descuenta saldo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2621,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
           "id": "TC-TRF-004",
-          "type": "test_case",
           "module": "Transferencias",
-          "content": "TC-TRF-004 | test_case | módulo Transferencias. Rechazo no descuenta saldo. Registrar saldo inicial, provocar un rechazo controlado y consultar saldo final. Ambos saldos deben coincidir y el estado debe ser rechazado. Si hubo una reserva temporal, debe existir la reversión documentada con la misma operación antes de cerrar la validación. Relaciones: BUG-TRF-001. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de rechazo no descuenta saldo usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2621,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "TC-TRF-004",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "BUG-TRF-001",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de rechazo no descuenta saldo usando sólo los datos del registro",
-            "title": "Rechazo no descuenta saldo",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "BUG-TRF-001",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de rechazo no descuenta saldo usando sólo los datos del registro",
+          "title": "Rechazo no descuenta saldo",
+          "type": "test_case",
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
       }
-    },
-    {
-      "case_id": "UC-04",
-      "user_question": "Un pago se duplica después de reintentar",
-      "system_answer": "La evidencia recuperada (BUG-PAG-001, BUG-PAG-002, TC-PAG-004, TC-PAG-002) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "Un pago se duplica después de reintentar",
+    "system_answer": "La evidencia recuperada (BUG-PAG-001, BUG-PAG-002, TC-PAG-004, TC-PAG-002) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-PAG-001",
+        "type": "bug",
+        "module": "Pago de servicios",
+        "content": "BUG-PAG-001 | bug | módulo Pago de servicios. Pago duplicado después de reintentar. Una respuesta tardía provoca que la interfaz ofrezca reintentar aunque el primer pago fue aceptado. El segundo envío crea otro débito para la misma factura. Debe validarse la idempotencia mediante la referencia de pago y confirmar que exista un único débito y un único comprobante. Relaciones: TC-PAG-001, TC-PAG-002. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de pago duplicado después de reintentar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.5039,
+        "metadata": {
+          "endpoint_or_operation": "POST /payments",
+          "evidence_state": "confirmado",
+          "functional_domain": "pago de servicios",
           "id": "BUG-PAG-001",
-          "type": "bug",
           "module": "Pago de servicios",
-          "content": "BUG-PAG-001 | bug | módulo Pago de servicios. Pago duplicado después de reintentar. Una respuesta tardía provoca que la interfaz ofrezca reintentar aunque el primer pago fue aceptado. El segundo envío crea otro débito para la misma factura. Debe validarse la idempotencia mediante la referencia de pago y confirmar que exista un único débito y un único comprobante. Relaciones: TC-PAG-001, TC-PAG-002. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de pago duplicado después de reintentar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.5039,
-          "metadata": {
-            "endpoint_or_operation": "POST /payments",
-            "evidence_state": "confirmado",
-            "functional_domain": "pago de servicios",
-            "id": "BUG-PAG-001",
-            "module": "Pago de servicios",
-            "owner_team": "equipo QA Pago de servicios",
-            "related_ids": "TC-PAG-001,TC-PAG-002",
-            "service_or_api": "qa-banking-pago-de-servicios",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de pago duplicado después de reintentar usando sólo los datos del registro",
-            "title": "Pago duplicado después de reintentar",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Pago de servicios",
+          "related_ids": "TC-PAG-001,TC-PAG-002",
+          "service_or_api": "qa-banking-pago-de-servicios",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de pago duplicado después de reintentar usando sólo los datos del registro",
+          "title": "Pago duplicado después de reintentar",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-PAG-002",
+        "type": "bug",
+        "module": "Pago de servicios",
+        "content": "BUG-PAG-002 | bug | módulo Pago de servicios. Pago rechazado queda pendiente. El proveedor rechaza la operación, pero la interfaz conserva el estado pendiente durante toda la sesión. Al volver a ingresar aparece correctamente como rechazada. El registro respalda revisar la actualización del estado sin inventar tiempos máximos que la fuente no define. Relaciones: TC-PAG-003. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: GET /payments/status. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de pago rechazado queda pendiente usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2802,
+        "metadata": {
+          "endpoint_or_operation": "GET /payments/status",
+          "evidence_state": "confirmado",
+          "functional_domain": "pago de servicios",
           "id": "BUG-PAG-002",
-          "type": "bug",
           "module": "Pago de servicios",
-          "content": "BUG-PAG-002 | bug | módulo Pago de servicios. Pago rechazado queda pendiente. El proveedor rechaza la operación, pero la interfaz conserva el estado pendiente durante toda la sesión. Al volver a ingresar aparece correctamente como rechazada. El registro respalda revisar la actualización del estado sin inventar tiempos máximos que la fuente no define. Relaciones: TC-PAG-003. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: GET /payments/status. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de pago rechazado queda pendiente usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2802,
-          "metadata": {
-            "endpoint_or_operation": "GET /payments/status",
-            "evidence_state": "confirmado",
-            "functional_domain": "pago de servicios",
-            "id": "BUG-PAG-002",
-            "module": "Pago de servicios",
-            "owner_team": "equipo QA Pago de servicios",
-            "related_ids": "TC-PAG-003",
-            "service_or_api": "qa-banking-pago-de-servicios",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de pago rechazado queda pendiente usando sólo los datos del registro",
-            "title": "Pago rechazado queda pendiente",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Pago de servicios",
+          "related_ids": "TC-PAG-003",
+          "service_or_api": "qa-banking-pago-de-servicios",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de pago rechazado queda pendiente usando sólo los datos del registro",
+          "title": "Pago rechazado queda pendiente",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-PAG-004",
+        "type": "test_case",
+        "module": "Pago de servicios",
+        "content": "TC-PAG-004 | test_case | módulo Pago de servicios. Vencimiento usa fecha local. Validar una factura durante las últimas horas de su fecha de vencimiento local y repetir después del cambio de día. Antes debe aceptarse y después rechazarse por vencida, usando una fecha ficticia controlada y sin depender del reloj real. Relaciones: BUG-PAG-003. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments/validate. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de vencimiento usa fecha local usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2848,
+        "metadata": {
+          "endpoint_or_operation": "POST /payments/validate",
+          "evidence_state": "confirmado",
+          "functional_domain": "pago de servicios",
           "id": "TC-PAG-004",
-          "type": "test_case",
           "module": "Pago de servicios",
-          "content": "TC-PAG-004 | test_case | módulo Pago de servicios. Vencimiento usa fecha local. Validar una factura durante las últimas horas de su fecha de vencimiento local y repetir después del cambio de día. Antes debe aceptarse y después rechazarse por vencida, usando una fecha ficticia controlada y sin depender del reloj real. Relaciones: BUG-PAG-003. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: POST /payments/validate. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de vencimiento usa fecha local usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2848,
-          "metadata": {
-            "endpoint_or_operation": "POST /payments/validate",
-            "evidence_state": "confirmado",
-            "functional_domain": "pago de servicios",
-            "id": "TC-PAG-004",
-            "module": "Pago de servicios",
-            "owner_team": "equipo QA Pago de servicios",
-            "related_ids": "BUG-PAG-003",
-            "service_or_api": "qa-banking-pago-de-servicios",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de vencimiento usa fecha local usando sólo los datos del registro",
-            "title": "Vencimiento usa fecha local",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Pago de servicios",
+          "related_ids": "BUG-PAG-003",
+          "service_or_api": "qa-banking-pago-de-servicios",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de vencimiento usa fecha local usando sólo los datos del registro",
+          "title": "Vencimiento usa fecha local",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-PAG-002",
+        "type": "test_case",
+        "module": "Pago de servicios",
+        "content": "TC-PAG-002 | test_case | módulo Pago de servicios. Un débito y un comprobante por factura. Pagar una factura ficticia y consultar débitos y comprobantes por su referencia. Debe existir exactamente un registro en cada conjunto y ambos deben apuntar al mismo pago. Repetir la consulta sin volver a emitir la operación. Relaciones: BUG-PAG-001. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: GET /payments/{id}. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de un débito y un comprobante por factura usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2518,
+        "metadata": {
+          "endpoint_or_operation": "GET /payments/{id}",
+          "evidence_state": "confirmado",
+          "functional_domain": "pago de servicios",
           "id": "TC-PAG-002",
-          "type": "test_case",
           "module": "Pago de servicios",
-          "content": "TC-PAG-002 | test_case | módulo Pago de servicios. Un débito y un comprobante por factura. Pagar una factura ficticia y consultar débitos y comprobantes por su referencia. Debe existir exactamente un registro en cada conjunto y ambos deben apuntar al mismo pago. Repetir la consulta sin volver a emitir la operación. Relaciones: BUG-PAG-001. Dominio: pago de servicios. Servicio/API: qa-banking-pago-de-servicios. Operación: GET /payments/{id}. Owner: equipo QA Pago de servicios. Smoke sugerido: verificar el flujo principal de un débito y un comprobante por factura usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2518,
-          "metadata": {
-            "endpoint_or_operation": "GET /payments/{id}",
-            "evidence_state": "confirmado",
-            "functional_domain": "pago de servicios",
-            "id": "TC-PAG-002",
-            "module": "Pago de servicios",
-            "owner_team": "equipo QA Pago de servicios",
-            "related_ids": "BUG-PAG-001",
-            "service_or_api": "qa-banking-pago-de-servicios",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de un débito y un comprobante por factura usando sólo los datos del registro",
-            "title": "Un débito y un comprobante por factura",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "owner_team": "equipo QA Pago de servicios",
+          "related_ids": "BUG-PAG-001",
+          "service_or_api": "qa-banking-pago-de-servicios",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de un débito y un comprobante por factura usando sólo los datos del registro",
+          "title": "Un débito y un comprobante por factura",
+          "type": "test_case",
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
       }
-    },
-    {
-      "case_id": "UC-05",
-      "user_question": "El límite de tarjeta cambia en la interfaz pero no en backend",
-      "system_answer": "La evidencia recuperada (BUG-TAR-001, BUG-AUT-002, TC-TAR-002, TC-TAR-001) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "El límite de tarjeta cambia en la interfaz pero no en backend",
+    "system_answer": "La evidencia recuperada (BUG-TAR-001, BUG-AUT-002, TC-TAR-002, TC-TAR-001) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-TAR-001",
+        "type": "bug",
+        "module": "Tarjetas y límites",
+        "content": "BUG-TAR-001 | bug | módulo Tarjetas y límites. Límite actualizado sólo en interfaz. La interfaz confirma el aumento de límite y muestra el nuevo valor, pero una consulta posterior al servicio devuelve el límite anterior. El cambio no queda persistido. La regresión debe contrastar confirmación visual, respuesta backend y valor tras iniciar una sesión nueva. Relaciones: TC-TAR-001, TC-TAR-002. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de límite actualizado sólo en interfaz usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.317,
+        "metadata": {
+          "endpoint_or_operation": "PATCH /cards/limit",
+          "evidence_state": "confirmado",
+          "functional_domain": "tarjetas y límites",
           "id": "BUG-TAR-001",
-          "type": "bug",
           "module": "Tarjetas y límites",
-          "content": "BUG-TAR-001 | bug | módulo Tarjetas y límites. Límite actualizado sólo en interfaz. La interfaz confirma el aumento de límite y muestra el nuevo valor, pero una consulta posterior al servicio devuelve el límite anterior. El cambio no queda persistido. La regresión debe contrastar confirmación visual, respuesta backend y valor tras iniciar una sesión nueva. Relaciones: TC-TAR-001, TC-TAR-002. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de límite actualizado sólo en interfaz usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.317,
-          "metadata": {
-            "endpoint_or_operation": "PATCH /cards/limit",
-            "evidence_state": "confirmado",
-            "functional_domain": "tarjetas y límites",
-            "id": "BUG-TAR-001",
-            "module": "Tarjetas y límites",
-            "owner_team": "equipo QA Tarjetas y límites",
-            "related_ids": "TC-TAR-001,TC-TAR-002",
-            "service_or_api": "qa-banking-tarjetas-y-límites",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de límite actualizado sólo en interfaz usando sólo los datos del registro",
-            "title": "Límite actualizado sólo en interfaz",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Tarjetas y límites",
+          "related_ids": "TC-TAR-001,TC-TAR-002",
+          "service_or_api": "qa-banking-tarjetas-y-límites",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de límite actualizado sólo en interfaz usando sólo los datos del registro",
+          "title": "Límite actualizado sólo en interfaz",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-AUT-002",
+        "type": "bug",
+        "module": "Autenticación",
+        "content": "BUG-AUT-002 | bug | módulo Autenticación. Desbloqueo no restablece contador. Después del desbloqueo exitoso el estado visible cambia a activo, pero el contador interno conserva cuatro intentos fallidos. Una nueva contraseña incorrecta vuelve a bloquear inmediatamente al usuario. El antecedente exige validar el reinicio del contador y un acceso correcto posterior, sin asumir mecanismos adicionales no descritos. Relaciones: TC-AUT-002, TC-AUT-003. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/unlock. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de desbloqueo no restablece contador usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1564,
+        "metadata": {
+          "endpoint_or_operation": "POST /auth/unlock",
+          "evidence_state": "confirmado",
+          "functional_domain": "autenticación",
           "id": "BUG-AUT-002",
-          "type": "bug",
           "module": "Autenticación",
-          "content": "BUG-AUT-002 | bug | módulo Autenticación. Desbloqueo no restablece contador. Después del desbloqueo exitoso el estado visible cambia a activo, pero el contador interno conserva cuatro intentos fallidos. Una nueva contraseña incorrecta vuelve a bloquear inmediatamente al usuario. El antecedente exige validar el reinicio del contador y un acceso correcto posterior, sin asumir mecanismos adicionales no descritos. Relaciones: TC-AUT-002, TC-AUT-003. Dominio: autenticación. Servicio/API: qa-banking-autenticacion. Operación: POST /auth/unlock. Owner: equipo QA Autenticación. Smoke sugerido: verificar el flujo principal de desbloqueo no restablece contador usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1564,
-          "metadata": {
-            "endpoint_or_operation": "POST /auth/unlock",
-            "evidence_state": "confirmado",
-            "functional_domain": "autenticación",
-            "id": "BUG-AUT-002",
-            "module": "Autenticación",
-            "owner_team": "equipo QA Autenticación",
-            "related_ids": "TC-AUT-002,TC-AUT-003",
-            "service_or_api": "qa-banking-autenticacion",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de desbloqueo no restablece contador usando sólo los datos del registro",
-            "title": "Desbloqueo no restablece contador",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Autenticación",
+          "related_ids": "TC-AUT-002,TC-AUT-003",
+          "service_or_api": "qa-banking-autenticacion",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de desbloqueo no restablece contador usando sólo los datos del registro",
+          "title": "Desbloqueo no restablece contador",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TAR-002",
+        "type": "test_case",
+        "module": "Tarjetas y límites",
+        "content": "TC-TAR-002 | test_case | módulo Tarjetas y límites. Backend rechaza límite inválido. Enviar un valor fuera de las reglas declaradas y comprobar que el servicio lo rechace sin modificar el límite vigente. Refrescar la interfaz y confirmar que tampoco muestre el valor inválido como aplicado. Relaciones: BUG-TAR-001. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de backend rechaza límite inválido usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1952,
+        "metadata": {
+          "endpoint_or_operation": "PATCH /cards/limit",
+          "evidence_state": "confirmado",
+          "functional_domain": "tarjetas y límites",
           "id": "TC-TAR-002",
-          "type": "test_case",
           "module": "Tarjetas y límites",
-          "content": "TC-TAR-002 | test_case | módulo Tarjetas y límites. Backend rechaza límite inválido. Enviar un valor fuera de las reglas declaradas y comprobar que el servicio lo rechace sin modificar el límite vigente. Refrescar la interfaz y confirmar que tampoco muestre el valor inválido como aplicado. Relaciones: BUG-TAR-001. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de backend rechaza límite inválido usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1952,
-          "metadata": {
-            "endpoint_or_operation": "PATCH /cards/limit",
-            "evidence_state": "confirmado",
-            "functional_domain": "tarjetas y límites",
-            "id": "TC-TAR-002",
-            "module": "Tarjetas y límites",
-            "owner_team": "equipo QA Tarjetas y límites",
-            "related_ids": "BUG-TAR-001",
-            "service_or_api": "qa-banking-tarjetas-y-límites",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de backend rechaza límite inválido usando sólo los datos del registro",
-            "title": "Backend rechaza límite inválido",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Tarjetas y límites",
+          "related_ids": "BUG-TAR-001",
+          "service_or_api": "qa-banking-tarjetas-y-límites",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de backend rechaza límite inválido usando sólo los datos del registro",
+          "title": "Backend rechaza límite inválido",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TAR-001",
+        "type": "test_case",
+        "module": "Tarjetas y límites",
+        "content": "TC-TAR-001 | test_case | módulo Tarjetas y límites. Cambio de límite persiste. Solicitar un límite ficticio permitido, confirmar el cambio y volver a consultar desde una sesión nueva. El valor de interfaz y backend debe coincidir. La prueba conserva el valor anterior para verificar que la modificación realmente fue persistida. Relaciones: BUG-TAR-001. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de cambio de límite persiste usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1586,
+        "metadata": {
+          "endpoint_or_operation": "PATCH /cards/limit",
+          "evidence_state": "confirmado",
+          "functional_domain": "tarjetas y límites",
           "id": "TC-TAR-001",
-          "type": "test_case",
           "module": "Tarjetas y límites",
-          "content": "TC-TAR-001 | test_case | módulo Tarjetas y límites. Cambio de límite persiste. Solicitar un límite ficticio permitido, confirmar el cambio y volver a consultar desde una sesión nueva. El valor de interfaz y backend debe coincidir. La prueba conserva el valor anterior para verificar que la modificación realmente fue persistida. Relaciones: BUG-TAR-001. Dominio: tarjetas y límites. Servicio/API: qa-banking-tarjetas-y-límites. Operación: PATCH /cards/limit. Owner: equipo QA Tarjetas y límites. Smoke sugerido: verificar el flujo principal de cambio de límite persiste usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1586,
-          "metadata": {
-            "endpoint_or_operation": "PATCH /cards/limit",
-            "evidence_state": "confirmado",
-            "functional_domain": "tarjetas y límites",
-            "id": "TC-TAR-001",
-            "module": "Tarjetas y límites",
-            "owner_team": "equipo QA Tarjetas y límites",
-            "related_ids": "BUG-TAR-001",
-            "service_or_api": "qa-banking-tarjetas-y-límites",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de cambio de límite persiste usando sólo los datos del registro",
-            "title": "Cambio de límite persiste",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "owner_team": "equipo QA Tarjetas y límites",
+          "related_ids": "BUG-TAR-001",
+          "service_or_api": "qa-banking-tarjetas-y-límites",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de cambio de límite persiste usando sólo los datos del registro",
+          "title": "Cambio de límite persiste",
+          "type": "test_case",
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
       }
-    },
-    {
-      "case_id": "UC-06",
-      "user_question": "Una operación exitosa no genera comprobante ni notificación",
-      "system_answer": "La evidencia recuperada (BUG-NOT-001, BUG-NOT-002, TC-NOT-002, TC-NOT-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "Una operación exitosa no genera comprobante ni notificación",
+    "system_answer": "La evidencia recuperada (BUG-NOT-001, BUG-NOT-002, TC-NOT-002, TC-NOT-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-NOT-001",
+        "type": "bug",
+        "module": "Notificaciones y comprobantes",
+        "content": "BUG-NOT-001 | bug | módulo Notificaciones y comprobantes. Operación exitosa sin comprobante. Una transferencia finaliza correctamente, pero el servicio de comprobantes responde sin documento asociado. El débito y el movimiento existen. El bug permite recomendar verificar generación y consulta del comprobante, manteniendo separados el éxito financiero y la disponibilidad documental. Relaciones: TC-NOT-001, TC-NOT-002. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: GET /receipts/{operation_id}. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de operación exitosa sin comprobante usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2689,
+        "metadata": {
+          "endpoint_or_operation": "GET /receipts/{operation_id}",
+          "evidence_state": "confirmado",
+          "functional_domain": "notificaciones y comprobantes",
           "id": "BUG-NOT-001",
-          "type": "bug",
           "module": "Notificaciones y comprobantes",
-          "content": "BUG-NOT-001 | bug | módulo Notificaciones y comprobantes. Operación exitosa sin comprobante. Una transferencia finaliza correctamente, pero el servicio de comprobantes responde sin documento asociado. El débito y el movimiento existen. El bug permite recomendar verificar generación y consulta del comprobante, manteniendo separados el éxito financiero y la disponibilidad documental. Relaciones: TC-NOT-001, TC-NOT-002. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: GET /receipts/{operation_id}. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de operación exitosa sin comprobante usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2689,
-          "metadata": {
-            "endpoint_or_operation": "GET /receipts/{operation_id}",
-            "evidence_state": "confirmado",
-            "functional_domain": "notificaciones y comprobantes",
-            "id": "BUG-NOT-001",
-            "module": "Notificaciones y comprobantes",
-            "owner_team": "equipo QA Notificaciones y comprobantes",
-            "related_ids": "TC-NOT-001,TC-NOT-002",
-            "service_or_api": "qa-banking-notificaciones-y-comprobantes",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de operación exitosa sin comprobante usando sólo los datos del registro",
-            "title": "Operación exitosa sin comprobante",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Notificaciones y comprobantes",
+          "related_ids": "TC-NOT-001,TC-NOT-002",
+          "service_or_api": "qa-banking-notificaciones-y-comprobantes",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de operación exitosa sin comprobante usando sólo los datos del registro",
+          "title": "Operación exitosa sin comprobante",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "BUG-NOT-002",
+        "type": "bug",
+        "module": "Notificaciones y comprobantes",
+        "content": "BUG-NOT-002 | bug | módulo Notificaciones y comprobantes. Notificación enviada dos veces. El consumidor procesa dos veces el mismo evento y envía notificaciones duplicadas por correo. Los mensajes comparten identificador de operación. El antecedente se limita a deduplicación observable y no confirma detalles internos del proveedor de mensajería fuera de la fuente ficticia. Relaciones: TC-NOT-003, TC-NOT-004. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: POST /notifications/events. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de notificación enviada dos veces usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1816,
+        "metadata": {
+          "endpoint_or_operation": "POST /notifications/events",
+          "evidence_state": "confirmado",
+          "functional_domain": "notificaciones y comprobantes",
           "id": "BUG-NOT-002",
-          "type": "bug",
           "module": "Notificaciones y comprobantes",
-          "content": "BUG-NOT-002 | bug | módulo Notificaciones y comprobantes. Notificación enviada dos veces. El consumidor procesa dos veces el mismo evento y envía notificaciones duplicadas por correo. Los mensajes comparten identificador de operación. El antecedente se limita a deduplicación observable y no confirma detalles internos del proveedor de mensajería fuera de la fuente ficticia. Relaciones: TC-NOT-003, TC-NOT-004. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: POST /notifications/events. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de notificación enviada dos veces usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1816,
-          "metadata": {
-            "endpoint_or_operation": "POST /notifications/events",
-            "evidence_state": "confirmado",
-            "functional_domain": "notificaciones y comprobantes",
-            "id": "BUG-NOT-002",
-            "module": "Notificaciones y comprobantes",
-            "owner_team": "equipo QA Notificaciones y comprobantes",
-            "related_ids": "TC-NOT-003,TC-NOT-004",
-            "service_or_api": "qa-banking-notificaciones-y-comprobantes",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de notificación enviada dos veces usando sólo los datos del registro",
-            "title": "Notificación enviada dos veces",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Notificaciones y comprobantes",
+          "related_ids": "TC-NOT-003,TC-NOT-004",
+          "service_or_api": "qa-banking-notificaciones-y-comprobantes",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de notificación enviada dos veces usando sólo los datos del registro",
+          "title": "Notificación enviada dos veces",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-NOT-002",
+        "type": "test_case",
+        "module": "Notificaciones y comprobantes",
+        "content": "TC-NOT-002 | test_case | módulo Notificaciones y comprobantes. Consulta de comprobante inexistente. Solicitar un comprobante con identificador ficticio inexistente y comprobar una respuesta controlada sin documento inventado. El sistema no debe asociar el comprobante de otra operación ni exponer información ajena. Relaciones: BUG-NOT-001. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: GET /receipts/{operation_id}. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de consulta de comprobante inexistente usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.3265,
+        "metadata": {
+          "endpoint_or_operation": "GET /receipts/{operation_id}",
+          "evidence_state": "confirmado",
+          "functional_domain": "notificaciones y comprobantes",
           "id": "TC-NOT-002",
-          "type": "test_case",
           "module": "Notificaciones y comprobantes",
-          "content": "TC-NOT-002 | test_case | módulo Notificaciones y comprobantes. Consulta de comprobante inexistente. Solicitar un comprobante con identificador ficticio inexistente y comprobar una respuesta controlada sin documento inventado. El sistema no debe asociar el comprobante de otra operación ni exponer información ajena. Relaciones: BUG-NOT-001. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: GET /receipts/{operation_id}. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de consulta de comprobante inexistente usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.3265,
-          "metadata": {
-            "endpoint_or_operation": "GET /receipts/{operation_id}",
-            "evidence_state": "confirmado",
-            "functional_domain": "notificaciones y comprobantes",
-            "id": "TC-NOT-002",
-            "module": "Notificaciones y comprobantes",
-            "owner_team": "equipo QA Notificaciones y comprobantes",
-            "related_ids": "BUG-NOT-001",
-            "service_or_api": "qa-banking-notificaciones-y-comprobantes",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de consulta de comprobante inexistente usando sólo los datos del registro",
-            "title": "Consulta de comprobante inexistente",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
+          "owner_team": "equipo QA Notificaciones y comprobantes",
+          "related_ids": "BUG-NOT-001",
+          "service_or_api": "qa-banking-notificaciones-y-comprobantes",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de consulta de comprobante inexistente usando sólo los datos del registro",
+          "title": "Consulta de comprobante inexistente",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-NOT-003",
+        "type": "test_case",
+        "module": "Notificaciones y comprobantes",
+        "content": "TC-NOT-003 | test_case | módulo Notificaciones y comprobantes. Evento genera una notificación. Publicar un evento ficticio de operación exitosa y consultar el registro observable de notificaciones. Debe existir un único envío asociado al identificador. La evidencia no habilita afirmar detalles del proveedor que no estén documentados. Relaciones: BUG-NOT-002. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: POST /notifications/events. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de evento genera una notificación usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.3194,
+        "metadata": {
+          "endpoint_or_operation": "POST /notifications/events",
+          "evidence_state": "confirmado",
+          "functional_domain": "notificaciones y comprobantes",
           "id": "TC-NOT-003",
-          "type": "test_case",
           "module": "Notificaciones y comprobantes",
-          "content": "TC-NOT-003 | test_case | módulo Notificaciones y comprobantes. Evento genera una notificación. Publicar un evento ficticio de operación exitosa y consultar el registro observable de notificaciones. Debe existir un único envío asociado al identificador. La evidencia no habilita afirmar detalles del proveedor que no estén documentados. Relaciones: BUG-NOT-002. Dominio: notificaciones y comprobantes. Servicio/API: qa-banking-notificaciones-y-comprobantes. Operación: POST /notifications/events. Owner: equipo QA Notificaciones y comprobantes. Smoke sugerido: verificar el flujo principal de evento genera una notificación usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.3194,
-          "metadata": {
-            "endpoint_or_operation": "POST /notifications/events",
-            "evidence_state": "confirmado",
-            "functional_domain": "notificaciones y comprobantes",
-            "id": "TC-NOT-003",
-            "module": "Notificaciones y comprobantes",
-            "owner_team": "equipo QA Notificaciones y comprobantes",
-            "related_ids": "BUG-NOT-002",
-            "service_or_api": "qa-banking-notificaciones-y-comprobantes",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de evento genera una notificación usando sólo los datos del registro",
-            "title": "Evento genera una notificación",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "owner_team": "equipo QA Notificaciones y comprobantes",
+          "related_ids": "BUG-NOT-002",
+          "service_or_api": "qa-banking-notificaciones-y-comprobantes",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de evento genera una notificación usando sólo los datos del registro",
+          "title": "Evento genera una notificación",
+          "type": "test_case",
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
       }
-    },
-    {
-      "case_id": "UC-07",
-      "user_question": "¿Qué regresión existente cubre el doble envío de transferencias?",
-      "system_answer": "La evidencia recuperada (BUG-TRF-002, BUG-TRF-003, TC-TRF-001, TC-TRF-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
-      "chunks_related": [
-        {
+    ]
+  },
+  {
+    "user_question": "¿Qué regresión existente cubre el doble envío de transferencias?",
+    "system_answer": "La evidencia recuperada (BUG-TRF-002, BUG-TRF-003, TC-TRF-001, TC-TRF-003) contiene antecedentes y cobertura relacionados. Revisá esos registros y ejecutá únicamente los test cases citados; los datos técnicos deben interpretarse según su estado de evidencia.",
+    "chunks_related": [
+      {
+        "id": "BUG-TRF-002",
+        "type": "bug",
+        "module": "Transferencias",
+        "content": "BUG-TRF-002 | bug | módulo Transferencias. Doble envío por confirmación repetida. Dos confirmaciones rápidas generan transferencias distintas porque la segunda solicitud no reutiliza la clave de idempotencia. Ambas operaciones quedan aprobadas y producen débitos independientes. La evidencia relaciona el control visual del botón con la protección del servicio, sin afirmar que uno sustituya al otro. Relaciones: TC-TRF-001, TC-TRF-002. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de doble envío por confirmación repetida usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2896,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
           "id": "BUG-TRF-002",
+          "module": "Transferencias",
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "TC-TRF-001,TC-TRF-002",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de doble envío por confirmación repetida usando sólo los datos del registro",
+          "title": "Doble envío por confirmación repetida",
           "type": "bug",
-          "module": "Transferencias",
-          "content": "BUG-TRF-002 | bug | módulo Transferencias. Doble envío por confirmación repetida. Dos confirmaciones rápidas generan transferencias distintas porque la segunda solicitud no reutiliza la clave de idempotencia. Ambas operaciones quedan aprobadas y producen débitos independientes. La evidencia relaciona el control visual del botón con la protección del servicio, sin afirmar que uno sustituya al otro. Relaciones: TC-TRF-001, TC-TRF-002. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de doble envío por confirmación repetida usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2896,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "BUG-TRF-002",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "TC-TRF-001,TC-TRF-002",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de doble envío por confirmación repetida usando sólo los datos del registro",
-            "title": "Doble envío por confirmación repetida",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
-          "id": "BUG-TRF-003",
-          "type": "bug",
-          "module": "Transferencias",
-          "content": "BUG-TRF-003 | bug | módulo Transferencias. Comisión omitida en confirmación. La pantalla de confirmación muestra el importe principal pero omite la comisión informada por el servicio. El débito final sí incluye ambos conceptos. El caso histórico exige comparar resumen previo, respuesta del servicio y movimiento posterior para evitar diferencias inesperadas para el usuario. Relaciones: TC-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión omitida en confirmación usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1301,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers/quote",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "BUG-TRF-003",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "TC-TRF-003",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de comisión omitida en confirmación usando sólo los datos del registro",
-            "title": "Comisión omitida en confirmación",
-            "type": "bug",
-            "validity": "2026-08"
-          }
-        },
-        {
-          "id": "TC-TRF-001",
-          "type": "test_case",
-          "module": "Transferencias",
-          "content": "TC-TRF-001 | test_case | módulo Transferencias. Confirmación única ante doble clic. Completar una transferencia y accionar dos veces la confirmación en un intervalo breve. Verificar una sola operación aprobada, un único identificador y un débito. La cobertura incluye el comportamiento visible, pero la protección definitiva también debe observarse en el servicio. Relaciones: BUG-TRF-002. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de confirmación única ante doble clic usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.2028,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "TC-TRF-001",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "BUG-TRF-002",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de confirmación única ante doble clic usando sólo los datos del registro",
-            "title": "Confirmación única ante doble clic",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
-        },
-        {
-          "id": "TC-TRF-003",
-          "type": "test_case",
-          "module": "Transferencias",
-          "content": "TC-TRF-003 | test_case | módulo Transferencias. Comisión visible antes de confirmar. Solicitar una cotización con comisión, revisar el resumen y confirmar que importe principal, comisión y total sean visibles y coincidan con la respuesta. Cancelar antes de transferir cuando el objetivo sea sólo validar la información previa. Relaciones: BUG-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
-          "score": 0.1657,
-          "metadata": {
-            "endpoint_or_operation": "POST /transfers/quote",
-            "evidence_state": "confirmado",
-            "functional_domain": "transferencias",
-            "id": "TC-TRF-003",
-            "module": "Transferencias",
-            "owner_team": "equipo QA Transferencias",
-            "related_ids": "BUG-TRF-003",
-            "service_or_api": "qa-banking-transferencias",
-            "source": "catálogo ficticio QA Memory RAG",
-            "suggested_smoke": "verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro",
-            "title": "Comisión visible antes de confirmar",
-            "type": "test_case",
-            "validity": "2026-08"
-          }
+          "validity": "2026-08"
         }
-      ],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
+      },
+      {
+        "id": "BUG-TRF-003",
+        "type": "bug",
+        "module": "Transferencias",
+        "content": "BUG-TRF-003 | bug | módulo Transferencias. Comisión omitida en confirmación. La pantalla de confirmación muestra el importe principal pero omite la comisión informada por el servicio. El débito final sí incluye ambos conceptos. El caso histórico exige comparar resumen previo, respuesta del servicio y movimiento posterior para evitar diferencias inesperadas para el usuario. Relaciones: TC-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión omitida en confirmación usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1301,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers/quote",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
+          "id": "BUG-TRF-003",
+          "module": "Transferencias",
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "TC-TRF-003",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de comisión omitida en confirmación usando sólo los datos del registro",
+          "title": "Comisión omitida en confirmación",
+          "type": "bug",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TRF-001",
+        "type": "test_case",
+        "module": "Transferencias",
+        "content": "TC-TRF-001 | test_case | módulo Transferencias. Confirmación única ante doble clic. Completar una transferencia y accionar dos veces la confirmación en un intervalo breve. Verificar una sola operación aprobada, un único identificador y un débito. La cobertura incluye el comportamiento visible, pero la protección definitiva también debe observarse en el servicio. Relaciones: BUG-TRF-002. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de confirmación única ante doble clic usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.2028,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
+          "id": "TC-TRF-001",
+          "module": "Transferencias",
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "BUG-TRF-002",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de confirmación única ante doble clic usando sólo los datos del registro",
+          "title": "Confirmación única ante doble clic",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
+      },
+      {
+        "id": "TC-TRF-003",
+        "type": "test_case",
+        "module": "Transferencias",
+        "content": "TC-TRF-003 | test_case | módulo Transferencias. Comisión visible antes de confirmar. Solicitar una cotización con comisión, revisar el resumen y confirmar que importe principal, comisión y total sean visibles y coincidan con la respuesta. Cancelar antes de transferir cuando el objetivo sea sólo validar la información previa. Relaciones: BUG-TRF-003. Dominio: transferencias. Servicio/API: qa-banking-transferencias. Operación: POST /transfers/quote. Owner: equipo QA Transferencias. Smoke sugerido: verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro. Fuente: catálogo ficticio QA Memory RAG. Vigencia: 2026-08. Evidencia: confirmado.",
+        "score": 0.1657,
+        "metadata": {
+          "endpoint_or_operation": "POST /transfers/quote",
+          "evidence_state": "confirmado",
+          "functional_domain": "transferencias",
+          "id": "TC-TRF-003",
+          "module": "Transferencias",
+          "owner_team": "equipo QA Transferencias",
+          "related_ids": "BUG-TRF-003",
+          "service_or_api": "qa-banking-transferencias",
+          "source": "catálogo ficticio QA Memory RAG",
+          "suggested_smoke": "verificar el flujo principal de comisión visible antes de confirmar usando sólo los datos del registro",
+          "title": "Comisión visible antes de confirmar",
+          "type": "test_case",
+          "validity": "2026-08"
+        }
       }
-    },
-    {
-      "case_id": "UC-08",
-      "user_question": "¿Cómo cultivo orquídeas en Marte?",
-      "system_answer": "No hay evidencia suficiente en la base de conocimiento para responder con trazabilidad.",
-      "chunks_related": [],
-      "evaluation": {
-        "score": 10.0,
-        "valid_ids": true,
-        "expected_evidence_found": true,
-        "abstention_correct": true,
-        "justification": "IDs válidos; evidencia esperada presente; abstención correcta"
-      }
-    }
-  ]
-}
+    ]
+  },
+  {
+    "user_question": "¿Cómo cultivo orquídeas en Marte?",
+    "system_answer": "No hay evidencia suficiente en la base de conocimiento para responder con trazabilidad.",
+    "chunks_related": []
+  }
+]

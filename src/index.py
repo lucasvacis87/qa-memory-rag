@@ -12,17 +12,23 @@ from .source import record_to_chunk
 
 
 class IndexUnavailableError(RuntimeError):
+    """Indica que todavía no existe una colección consultable."""
+
     pass
 
 
 class QAIndex:
+    """Construye y consulta la colección vectorial de registros QA."""
+
     def __init__(self, path: Path, collection_name: str, embeddings: EmbeddingProvider) -> None:
+        """Abre un cliente Chroma local con el proveedor indicado."""
         self.path = path
         self.collection_name = collection_name
         self.embeddings = embeddings
         self.client = chromadb.PersistentClient(path=str(path))
 
     def rebuild(self, records: list[QARecord]) -> int:
+        """Reemplaza la colección e indexa todos los registros."""
         try:
             self.client.delete_collection(self.collection_name)
         except Exception:
@@ -40,6 +46,7 @@ class QAIndex:
         return collection.count()
 
     def count(self) -> int:
+        """Devuelve la cantidad de chunks indexados."""
         try:
             return self.client.get_collection(self.collection_name).count()
         except Exception as error:
@@ -49,6 +56,7 @@ class QAIndex:
         self, question: str, record_type: RecordType, limit: int = 2,
         threshold: float = 0.45,
     ) -> list[RetrievedChunk]:
+        """Recupera los chunks más similares de un tipo determinado."""
         try:
             collection = self.client.get_collection(self.collection_name)
         except Exception as error:

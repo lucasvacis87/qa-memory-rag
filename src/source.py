@@ -17,10 +17,13 @@ ID_PATTERN = re.compile(r"^(BUG|TC)-[A-Z]{3}-\d{3}$")
 
 
 class SourceValidationError(ValueError):
+    """Indica que el documento fuente no cumple su formato."""
+
     pass
 
 
 def _parse_block(block: str) -> QARecord:
+    """Convierte un bloque de texto validado en un registro QA."""
     fields: dict[str, str] = {}
     current: str | None = None
     for raw_line in block.strip().splitlines():
@@ -32,6 +35,12 @@ def _parse_block(block: str) -> QARecord:
     missing = REQUIRED_FIELDS - fields.keys()
     if missing:
         raise SourceValidationError(f"Registro incompleto; faltan: {sorted(missing)}")
+    return _record_from_fields(fields)
+
+
+def _record_from_fields(fields: dict[str, str]) -> QARecord:
+    """Valida los campos y construye el registro de dominio."""
+
     record_id = fields["ID"]
     if not ID_PATTERN.fullmatch(record_id):
         raise SourceValidationError(f"ID inválido: {record_id}")
@@ -60,6 +69,7 @@ def _parse_block(block: str) -> QARecord:
 
 
 def load_records(path: Path) -> list[QARecord]:
+    """Carga la fuente y valida volumen, IDs y relaciones."""
     text = path.read_text(encoding="utf-8")
     blocks = [block for block in text.split("\n===\n") if "ID: " in block]
     records = [_parse_block(block) for block in blocks]
@@ -81,6 +91,7 @@ def load_records(path: Path) -> list[QARecord]:
 
 
 def record_to_chunk(record: QARecord) -> str:
+    """Convierte un registro completo en un chunk semántico."""
     related = ", ".join(record.related_ids) or "sin relaciones registradas"
     return (
         f"{record.id} | {record.record_type} | módulo {record.module}. "

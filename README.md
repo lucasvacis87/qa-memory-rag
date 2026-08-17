@@ -12,7 +12,58 @@ evidencia no alcanza, se abstiene.
 - Hasta dos bugs y dos test cases por consulta.
 - Generación con Responses API y `gpt-5.4-nano`.
 - JSON con exactamente `user_question`, `system_answer` y `chunks_related`.
-- 34+ tests offline, evaluador determinístico, ejemplos y [demo estática](https://lucasvacis87.github.io/qa-memory-rag/).
+- Tests offline, evaluador determinístico, ejemplos y [demo estática](https://lucasvacis87.github.io/qa-memory-rag/).
+
+## Flujo de construcción y consulta del RAG
+
+El sistema separa la **indexación** de la **consulta**. Primero transforma la fuente en
+representaciones vectoriales persistentes; después convierte cada pregunta al mismo espacio
+vectorial, recupera evidencia relevante y recién entonces permite que el LLM redacte la respuesta.
+
+```mermaid
+flowchart TD
+    subgraph INDEX["1. Pipeline de indexación"]
+        A["Documento fuente UTF-8<br/>15 bugs + 22 test cases"]
+        B["Parsing y validación<br/>estructura, IDs y relaciones"]
+        C["Chunking semántico<br/>1 registro QA = 1 chunk completo"]
+        D["Mapeo de metadata<br/>tipo, módulo, relaciones y evidencia"]
+        E["Modelo de embeddings<br/>text-embedding-3-small"]
+        F[("Base vectorial ChromaDB<br/>37 vectores + chunks + metadata")]
+
+        A --> B --> C --> D
+        C --> E
+        D --> F
+        E --> F
+    end
+
+    subgraph QUERY["2. Pipeline de consulta RAG"]
+        G["Pregunta del usuario"]
+        H["Embedding de la consulta<br/>mismo modelo y dimensionalidad"]
+        I["Búsqueda vectorial ANN<br/>similitud coseno + umbral"]
+        J["Recuperación top-k por tipo<br/>hasta 2 bugs + 2 test cases"]
+        K{"¿Hay evidencia<br/>suficiente?"}
+        L["Armado del contexto<br/>sólo chunks recuperados"]
+        M["LLM con Responses API<br/>gpt-5.4-nano"]
+        N{"Guardrail determinístico<br/>¿todos los IDs fueron recuperados?"}
+        O["JSON trazable<br/>user_question<br/>system_answer<br/>chunks_related"]
+        P["Abstención segura"]
+
+        G --> H --> I --> J --> K
+        K -- Sí --> L --> M --> N
+        K -- No --> P --> O
+        N -- Sí --> O
+        N -- No --> P
+    end
+
+    F --> I
+```
+
+El **chunking** conserva cada registro QA completo para no separar el ID de sus pasos,
+relaciones y evidencia. El **mapeo de metadata** agrega campos filtrables y trazables al chunk.
+Los **embeddings** convierten chunks y preguntas en vectores comparables. ChromaDB funciona
+como **base vectorial** y ejecuta recuperación ANN con distancia coseno. El **LLM** no consulta
+la fuente completa: recibe solamente el contexto recuperado. Finalmente, una validación ajena
+al modelo bloquea IDs no presentes y fuerza una abstención si la respuesta no está fundamentada.
 
 ## Requisitos e instalación
 
@@ -26,8 +77,12 @@ python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Editá `.env` localmente y reemplazá solamente `OPENAI_API_KEY`. El archivo está ignorado por
-Git. No compartas la clave por chat, capturas, logs ni commits.
+Editá `.env` localmente y reemplazá `OPENAI_API_KEY`. Los modelos predeterminados ya están
+configurados; podés cambiarlos si tu cuenta no tiene acceso. El archivo está ignorado por Git.
+No compartas la clave por chat, capturas, logs ni commits.
+
+`build-index` y `query` usan OpenAI y pueden generar costo. La validación, los tests, la
+generación de muestras y la demo funcionan sin API key, red ni consumo.
 
 ## Uso
 
@@ -41,8 +96,8 @@ python -m http.server 8000 --directory docs
 ```
 
 La indexación informa cantidad de chunks, tokens estimados y costo estimado. El costo de
-embeddings se calcula aparte de la generación. Los precios son configurables en
-`src/pricing.py` y deben revisarse antes de una entrega futura.
+embeddings se calcula aparte de la generación. Los precios de referencia están centralizados
+en `src/pricing.py` y conviene verificarlos antes de ejecutar llamadas pagas.
 
 ## Estructura
 
@@ -66,9 +121,9 @@ datos bancarios reales y no publica un backend. La demo contiene resultados prec
 no realiza llamadas a OpenAI. Un smoke sólo puede aparecer como sugerencia derivada de la
 evidencia; nunca se presenta como test case histórico.
 
-La especificación completa está en [PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md), los límites en
+La intención está resumida en [PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md), los límites en
 [GUARDRAILS.md](docs/GUARDRAILS.md), la arquitectura en [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-y la consigna original en [Consignas_proyecto.md](Consignas_proyecto.md).
+y la consigna académica en [Consignas_proyecto.md](Consignas_proyecto.md).
 
 ## Troubleshooting
 

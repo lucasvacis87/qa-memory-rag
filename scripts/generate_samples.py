@@ -30,6 +30,7 @@ CASES = [
 
 
 def main() -> None:
+    """Regenera ejemplos públicos y datos de la demo sin usar APIs."""
     records = load_records(ROOT / "data" / "faq_document.txt")
     # Chroma mantiene archivos mapeados brevemente en Windows; la limpieza del
     # temporal no debe invalidar la generación ya completada.
@@ -37,18 +38,24 @@ def main() -> None:
         index = QAIndex(Path(directory), "samples", DeterministicEmbeddingProvider())
         index.rebuild(records)
         samples = []
+        demo_samples = []
         for case_id, question, expected_ids, threshold in CASES:
             response = ask(question, index, ExtractiveAnswerProvider(), threshold)
-            item = {"case_id": case_id, **response.public_dict(),
-                    "evaluation": evaluate(response, expected_ids,
-                                           expect_abstention=case_id == "UC-08").__dict__}
-            samples.append(item)
-    payload = {"mode": "offline_deterministic", "samples": samples}
+            public_response = response.public_dict()
+            samples.append(public_response)
+            demo_samples.append({
+                "case_id": case_id,
+                **public_response,
+                "evaluation": evaluate(
+                    response, expected_ids, expect_abstention=case_id == "UC-08"
+                ).__dict__,
+            })
+    demo_payload = {"mode": "offline_deterministic", "samples": demo_samples}
     (ROOT / "outputs" / "sample_queries.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(samples, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     (ROOT / "docs" / "demo-data.js").write_text(
-        "window.QA_MEMORY_SAMPLES = " + json.dumps(payload, ensure_ascii=False) + ";\n",
+        "window.QA_MEMORY_SAMPLES = " + json.dumps(demo_payload, ensure_ascii=False) + ";\n",
         encoding="utf-8",
     )
 

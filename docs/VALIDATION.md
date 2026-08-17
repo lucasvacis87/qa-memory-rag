@@ -3,7 +3,7 @@
 ## Suite automatizada
 
 - Parser, IDs duplicados, relaciones y volumen de la fuente.
-- Chunks completos de 50 a 500 palabras aproximadas.
+- Chunks completos de 50 a 500 tokens aproximados.
 - Construcción, persistencia y reapertura de Chroma.
 - Filtros separados y límite de resultados.
 - Contrato JSON exacto, abstención e IDs inventados.

@@ -11,11 +11,21 @@ from typing import Protocol
 
 
 class EmbeddingProvider(Protocol):
-    def embed(self, texts: Sequence[str]) -> list[list[float]]: ...
+    """Contrato mínimo para convertir textos en vectores."""
+
+    def embed(self, texts: Sequence[str]) -> list[list[float]]:
+        """Convierte cada texto recibido en un vector."""
+
+        ...
 
 
 class AnswerProvider(Protocol):
-    def answer(self, question: str, context: str) -> str: ...
+    """Contrato mínimo para generar una respuesta con contexto."""
+
+    def answer(self, question: str, context: str) -> str:
+        """Responde una pregunta usando únicamente el contexto."""
+
+        ...
 
 
 class DeterministicEmbeddingProvider:
@@ -25,9 +35,11 @@ class DeterministicEmbeddingProvider:
                   "con", "sin", "por", "para", "en", "al", "se", "su", "sus", "es"}
 
     def __init__(self, dimensions: int = 1024) -> None:
+        """Define la dimensión fija de los vectores de prueba."""
         self.dimensions = dimensions
 
     def embed(self, texts: Sequence[str]) -> list[list[float]]:
+        """Genera vectores léxicos reproducibles sin usar red."""
         vectors: list[list[float]] = []
         for text in texts:
             vector = [0.0] * self.dimensions
@@ -43,23 +55,31 @@ class DeterministicEmbeddingProvider:
 
 
 class OpenAIEmbeddingProvider:
+    """Genera embeddings mediante la API de OpenAI."""
+
     def __init__(self, api_key: str, model: str) -> None:
+        """Crea el cliente con la clave y el modelo configurados."""
         from openai import OpenAI
         self.client = OpenAI(api_key=api_key)
         self.model = model
 
     def embed(self, texts: Sequence[str]) -> list[list[float]]:
+        """Solicita un embedding por cada texto recibido."""
         response = self.client.embeddings.create(model=self.model, input=list(texts))
         return [item.embedding for item in response.data]
 
 
 class OpenAIAnswerProvider:
+    """Genera respuestas limitadas a la evidencia recuperada."""
+
     def __init__(self, api_key: str, model: str) -> None:
+        """Crea el cliente con la clave y el modelo configurados."""
         from openai import OpenAI
         self.client = OpenAI(api_key=api_key)
         self.model = model
 
     def answer(self, question: str, context: str) -> str:
+        """Pide al modelo una respuesta breve y estructurada."""
         prompt = (
             "Sos un asistente de QA evidence-only. Respondé en español, de forma breve. "
             "Usá exclusivamente la evidencia recibida. Mencioná solamente IDs presentes. "

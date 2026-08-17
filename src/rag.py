@@ -14,10 +14,12 @@ ABSTENTION = "No hay evidencia suficiente en la base de conocimiento para respon
 
 
 def _context(chunks: list[RetrievedChunk]) -> str:
+    """Une los chunks recuperados para formar el contexto del modelo."""
     return "\n\n".join(chunk.content for chunk in chunks)
 
 
 def _answer_is_grounded(answer: str, chunks: list[RetrievedChunk]) -> bool:
+    """Verifica que la respuesta cite sólo IDs recuperados."""
     available = {chunk.id for chunk in chunks}
     cited = set(ID_PATTERN.findall(answer))
     return bool(cited) and cited <= available
@@ -27,6 +29,7 @@ def ask(
     question: str, index: QAIndex, answer_provider: AnswerProvider,
     threshold: float = 0.45,
 ) -> RAGResponse:
+    """Recupera evidencia, genera una respuesta y valida sus IDs."""
     if not question.strip():
         raise ValueError("La pregunta no puede estar vacía")
     bugs = index.search(question, "bug", threshold=threshold)
@@ -46,6 +49,7 @@ class ExtractiveAnswerProvider:
     """Generador offline para pruebas y demo reproducible basado sólo en evidencia."""
 
     def answer(self, question: str, context: str) -> str:
+        """Resume los IDs recuperados para demos y pruebas offline."""
         ids = list(dict.fromkeys(re.findall(r"(?m)^(?:BUG|TC)-[A-Z]{3}-\d{3}", context)))
         selected = ids[:4]
         if not selected:

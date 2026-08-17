@@ -22,6 +22,7 @@ def evaluate(
     response: RAGResponse, expected_ids: set[str] | None = None,
     expect_abstention: bool | None = None,
 ) -> Evaluation:
+    """Puntúa trazabilidad, evidencia esperada y abstención."""
     available = {chunk.id for chunk in response.chunks_related}
     cited = set(ID_PATTERN.findall(response.system_answer))
     valid_ids = cited <= available

@@ -1,4 +1,4 @@
-"""Configuración local y segura para los futuros pasos de OpenAI.
+"""Configuración local y segura para usar OpenAI y Chroma.
 
 Este módulo no crea clientes ni realiza llamadas de red. La carga de ``.env``
 ocurre únicamente al invocar :func:`load_settings`.
@@ -21,7 +21,7 @@ class ConfigurationError(ValueError):
 
 @dataclass(frozen=True)
 class Settings:
-    """Valores necesarios antes de usar embeddings o generación en el futuro."""
+    """Valores necesarios para embeddings, generación y almacenamiento local."""
 
     openai_api_key: str
     embedding_model: str
@@ -36,6 +36,11 @@ _REQUIRED_VARIABLES = (
     "EMBEDDING_MODEL",
     "RESPONSE_MODEL",
 )
+_OPTIONAL_VARIABLES = (
+    "CHROMA_PATH",
+    "COLLECTION_NAME",
+    "RELEVANCE_THRESHOLD",
+)
 _PLACEHOLDER_VALUES = {
     "your-key-here",
     "your-response-model",
@@ -47,6 +52,7 @@ _PLACEHOLDER_VALUES = {
 
 
 def _is_placeholder(value: str) -> bool:
+    """Indica si un valor conserva el texto de ejemplo."""
     normalized = value.strip().lower()
     return (
         normalized in _PLACEHOLDER_VALUES
@@ -56,6 +62,7 @@ def _is_placeholder(value: str) -> bool:
 
 
 def _read_required_value(name: str, value: str | None) -> str:
+    """Obtiene una variable obligatoria o informa cómo configurarla."""
     if value is None or not value.strip():
         raise ConfigurationError(
             f"Falta configurar {name}. Completá tu archivo .env local antes de continuar."
@@ -92,7 +99,8 @@ def load_settings(dotenv_path: Path | None = None) -> Settings:
 
     path = dotenv_path if dotenv_path is not None else Path.cwd() / ".env"
     load_dotenv(dotenv_path=path, override=False)
-    return validate_settings({name: os.getenv(name) for name in _REQUIRED_VARIABLES})
+    names = _REQUIRED_VARIABLES + _OPTIONAL_VARIABLES
+    return validate_settings({name: os.getenv(name) for name in names})
 
 
 def main() -> int:
