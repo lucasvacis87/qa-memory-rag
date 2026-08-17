@@ -24,3 +24,5 @@ Validación real realizada el 16 de agosto de 2026:
 - 7.119 tokens de embeddings y costo estimado de USD 0,00014238.
 - UC-03 recuperó `BUG-TRF-001`, `TC-TRF-004` y `TC-TRF-007`; la respuesta pasó el control de IDs.
 - La consulta fuera de dominio sobre cultivo devolvió abstención y cero chunks.
+- CI en `main` y despliegue de GitHub Pages finalizaron correctamente.
+- Demo pública: <https://lucasvacis87.github.io/qa-memory-rag/>.

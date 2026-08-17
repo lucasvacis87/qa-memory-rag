@@ -55,8 +55,8 @@ No se completa información por inferencia: `confirmado` exige respaldo explíci
 ## Sprint 5 — Demo y entrega
 
 - HU-20 (completada): crear demo visual estática con resultados ficticios precalculados.
-- HU-21 (lista para publicar): publicar GitHub Pages desde `main/docs`.
-- HU-22 (en validación final): documentar, probar un clon limpio y preparar la entrega.
+- HU-21 (completada): publicar GitHub Pages desde `main/docs`.
+- HU-22 (completada): documentar, probar un clon limpio y preparar la entrega.
 
 **Resultado:** repositorio autocontenido, sin secretos y navegable para evaluación.
 
