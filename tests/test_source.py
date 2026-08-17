@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+import tiktoken
 
 from src.source import SourceValidationError, load_records, record_to_chunk
 
@@ -18,13 +19,14 @@ def test_source_meets_volume_and_traceability_contract() -> None:
 
 
 def test_each_record_becomes_one_complete_semantic_chunk() -> None:
+    encoding = tiktoken.get_encoding("cl100k_base")
     records = load_records(SOURCE)
     for record in records:
         chunk = record_to_chunk(record)
         assert record.id in chunk
         assert record.module in chunk
         assert record.evidence_state in chunk
-        assert 50 <= len(chunk.split()) <= 500
+        assert 50 <= len(encoding.encode(chunk)) <= 500
 
 
 def test_duplicate_id_is_rejected(tmp_path: Path) -> None:

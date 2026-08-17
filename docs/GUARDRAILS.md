@@ -31,7 +31,7 @@
 - La metadata técnica se preserva dentro de los elementos de `chunks_related`; no agrega filtros técnicos al MVP ni modifica el contrato público.
 - Sin SQL, Docker, backend público, autenticación, agentes múltiples ni abstracciones prematuras.
 - La demo estática no tendrá API key, backend ni llamadas a OpenAI.
-- Un conector externo queda fuera de estos cinco sprints; cuando se evalúe, deberá ser *read-only* y normalizar fuente, vigencia y estado de evidencia antes de indexar.
+- No se incluyen conectores externos: el entregable usa únicamente el documento local versionado.
 
 ## Calidad mínima
 

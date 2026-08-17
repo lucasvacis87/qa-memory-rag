@@ -43,7 +43,7 @@ También se validarán dos comportamientos transversales:
 - Una consulta sobre una funcionalidad inexistente debe producir una abstención clara.
 - Una consulta de regresión debe recomendar exclusivamente test cases existentes, con sus IDs.
 
-## Alcance de la primera versión
+## Alcance
 
 - Un documento de texto plano: `data/faq_document.txt`.
 - Al menos 15 bugs ficticios, 20 test cases y una introducción funcional de los módulos.
@@ -59,7 +59,7 @@ La búsqueda MVP continúa separando `bug` y `test_case`. La metadata técnica n
 
 Un smoke sugerido sólo puede derivarse de evidencia recuperada y se debe etiquetar como sugerencia; no equivale a un test case existente ni a evidencia histórica. Si esa evidencia no alcanza, el sistema debe abstenerse.
 
-## Decisiones técnicas propuestas
+## Decisiones técnicas
 
 | Decisión | Elección | Motivo |
 | --- | --- | --- |
@@ -79,7 +79,7 @@ la ruta productiva usa los modelos configurados en `.env`.
 - Generación de nuevos test cases o bugs.
 - Base SQL, Docker, autenticación, backend público o agentes múltiples.
 - Frontend con React, Vite, npm o llamadas directas a OpenAI desde el navegador.
-- Un conector externo durante estos cinco sprints. Una integración futura será *read-only*, con normalización de la fuente y preservación de fuente, vigencia y estado de evidencia antes de indexar.
+- Conectores a gestores de tickets o fuentes externas.
 
 ## Criterios de éxito
 
