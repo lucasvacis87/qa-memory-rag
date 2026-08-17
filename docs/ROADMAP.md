@@ -12,44 +12,51 @@ No hay fechas comprometidas. Se trabaja una sola historia por vez y cada etapa t
 
 ## Sprint 1 — Base de conocimiento QA
 
-- HU-04: diseñar al menos 15 bugs históricos ficticios.
-- HU-05: diseñar al menos 20 test cases existentes y trazables.
-- HU-06: construir y validar `data/faq_document.txt`.
+- HU-04: definir el catálogo técnico mínimo *evidence-only*.
+- HU-05: diseñar al menos 15 bugs históricos ficticios.
+- HU-06: diseñar al menos 20 test cases existentes y trazables.
+- HU-07: construir y validar `data/faq_document.txt`.
 
-**Resultado:** una fuente ficticia, UTF-8, con IDs únicos, módulos y relaciones bug–test case claras.
+**Resultado:** una fuente ficticia, UTF-8, con IDs únicos, módulos, metadata técnica respaldada y relaciones bug–test case claras.
+
+### HU-04 — Catálogo técnico mínimo *evidence-only*
+
+Define, antes de redactar los registros QA, los campos técnicos ficticios que pueden acompañar cada evidencia: dominio funcional, servicio o API, endpoint u operación, equipo owner, smoke sugerido, fuente y vigencia. Cada campo o relación debe quedar marcado como `confirmado`, `parcial` o `desconocido`.
+
+No se completa información por inferencia: `confirmado` exige respaldo explícito en la fuente; `parcial` conserva sólo lo disponible; `desconocido` expresa la ausencia de evidencia. Un smoke sugerido debe estar respaldado por la evidencia y nunca se presenta como cobertura histórica existente.
 
 ## Sprint 2 — Chunking, embeddings e índice local
 
-- HU-07: cargar y limpiar la fuente.
-- HU-08: crear chunks completos por registro QA.
-- HU-09: probar embeddings con situaciones QA.
-- HU-10: crear y persistir el índice local de Chroma.
+- HU-08: cargar y limpiar la fuente.
+- HU-09: crear chunks completos por registro QA y preservar su metadata técnica.
+- HU-10: probar embeddings con situaciones QA.
+- HU-11: crear y persistir el índice local de Chroma.
 
 **Resultado:** documento procesado, 20 o más chunks con metadata y un índice que se puede reabrir.
 
 ## Sprint 3 — Recuperación QA
 
-- HU-11: buscar únicamente bugs similares.
-- HU-12: buscar únicamente test cases relacionados.
-- HU-13: combinar ambas búsquedas en una vista clara.
+- HU-12: buscar únicamente bugs similares.
+- HU-13: buscar únicamente test cases relacionados.
+- HU-14: combinar ambas búsquedas en una vista clara.
 
-**Resultado:** resultados separados por tipo, filtrados por metadata y limitados a cuatro chunks totales.
+**Resultado:** resultados separados por tipo (`bug` y `test_case`) y limitados a cuatro chunks totales; la metadata técnica queda preservada para auditoría, sin filtros técnicos en el MVP.
 
 ## Sprint 4 — Respuestas, calidad y evaluación
 
-- HU-14: generar recomendación fundamentada o abstención.
-- HU-15: aplicar el contrato JSON público.
-- HU-16: evaluar relevancia de consultas de los seis módulos.
-- HU-17: agregar pruebas y manejo de errores.
-- HU-18: implementar el evaluador bonus si el flujo principal ya es estable.
+- HU-15: generar recomendación fundamentada o abstención, distinguiendo evidencia confirmada, parcial y desconocida.
+- HU-16: aplicar el contrato JSON público.
+- HU-17: evaluar relevancia de consultas de los seis módulos y la integridad de la metadata preservada.
+- HU-18: agregar pruebas y manejo de errores, incluida la no invención de IDs, relaciones y metadata.
+- HU-19: implementar el evaluador bonus si el flujo principal ya es estable.
 
 **Resultado:** pipeline completo, comprobable y con al menos 80% de evidencia relevante en ejemplos.
 
 ## Sprint 5 — Demo y entrega
 
-- HU-19: crear demo visual estática con resultados ficticios precalculados.
-- HU-20: publicar GitHub Pages desde `main/docs`.
-- HU-21: documentar, probar un clon limpio y preparar la entrega.
+- HU-20: crear demo visual estática con resultados ficticios precalculados.
+- HU-21: publicar GitHub Pages desde `main/docs`.
+- HU-22: documentar, probar un clon limpio y preparar la entrega.
 
 **Resultado:** repositorio autocontenido, sin secretos y navegable para evaluación.
 
@@ -57,8 +64,14 @@ No hay fechas comprometidas. Se trabaja una sola historia por vez y cada etapa t
 
 | Antes de avanzar a | Debe verificarse |
 | --- | --- |
-| Sprint 2 | La base contiene bugs, test cases y trazabilidad completos. |
+| Sprint 2 | La base contiene bugs, test cases, trazabilidad completa y metadata técnica con fuente, vigencia y estado de evidencia. |
 | Sprint 3 | Los chunks conservan ID, tipo, módulo y contenido útil. |
 | Sprint 4 | El índice local se construye y se vuelve a abrir correctamente. |
 | Sprint 5 | El JSON cumple el contrato y las consultas sin evidencia se abstienen. |
 | Entrega | Tests, documentación, secretos y clon limpio revisados. |
+
+## Límites de integración
+
+El MVP conserva las búsquedas separadas por `bug` y `test_case`; la metadata técnica se preserva dentro de cada elemento de `chunks_related`, sin agregar filtros técnicos como requisito inicial. El contrato público no cambia.
+
+Un conector externo no integra estos cinco sprints. Será una etapa futura, *read-only*, que deberá normalizar su fuente y conservar fuente, vigencia y estados de evidencia antes de indexar; no se harán consultas remotas en vivo por cada pregunta.

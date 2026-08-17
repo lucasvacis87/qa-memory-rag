@@ -47,11 +47,17 @@ También se validarán dos comportamientos transversales:
 
 - Un documento de texto plano: `data/faq_document.txt`.
 - Al menos 15 bugs ficticios, 20 test cases y una introducción funcional de los módulos.
-- Un chunk semántico por bug o test case, con metadata de ID, tipo y módulo.
+- Un catálogo técnico mínimo *evidence-only* para los registros ficticios: dominio funcional, servicio o API, endpoint u operación, equipo owner, smoke sugerido, fuente y vigencia.
+- Cada dato o relación técnica se expresa como `confirmado`, `parcial` o `desconocido`: sólo lo explícito en la fuente se considera confirmado; no se completan huecos por inferencia.
+- Un chunk semántico por bug o test case, con metadata de ID, tipo, módulo y los datos técnicos que estén respaldados.
 - Una colección local de Chroma con búsqueda por similitud coseno.
 - Dos búsquedas filtradas: `bug` y `test_case`.
 - Hasta dos bugs y dos test cases por consulta.
 - Una salida JSON con exactamente `user_question`, `system_answer` y `chunks_related`.
+
+La búsqueda MVP continúa separando `bug` y `test_case`. La metadata técnica no agrega filtros en esta primera versión: se preserva dentro de cada elemento de `chunks_related` para que la respuesta sea auditable sin alterar el contrato público.
+
+Un smoke sugerido sólo puede derivarse de evidencia recuperada y se debe etiquetar como sugerencia; no equivale a un test case existente ni a evidencia histórica. Si esa evidencia no alcanza, el sistema debe abstenerse.
 
 ## Decisiones técnicas propuestas
 
@@ -72,10 +78,12 @@ Estas son decisiones de diseño, no componentes implementados todavía.
 - Generación de nuevos test cases o bugs.
 - Base SQL, Docker, autenticación, backend público o agentes múltiples.
 - Frontend con React, Vite, npm o llamadas directas a OpenAI desde el navegador.
+- Un conector externo durante estos cinco sprints. Una integración futura será *read-only*, con normalización de la fuente y preservación de fuente, vigencia y estado de evidencia antes de indexar.
 
 ## Criterios de éxito
 
 - El RAG recupera evidencia relevante en los seis casos de uso.
 - Las recomendaciones solo mencionan IDs presentes en la fuente.
+- Las relaciones técnicas, owners, endpoints y smokes no se inventan y conservan su fuente, vigencia y estado de evidencia.
 - Las consultas sin evidencia reciben abstención, no contenido inventado.
 - El proyecto cumple la consigna: 20+ chunks, embeddings, búsqueda vectorial, respuesta JSON y documentación reproducible.

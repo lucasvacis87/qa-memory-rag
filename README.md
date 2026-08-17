@@ -24,6 +24,8 @@ El dominio ficticio cubre seis módulos de banca digital:
 
 La base de conocimiento contendrá bugs y test cases ficticios, trazables por ID, tipo y módulo. El sistema recuperará hasta dos bugs y dos test cases por consulta.
 
+Cada registro podrá conservar una base técnica mínima respaldada por su propia fuente ficticia: dominio funcional, servicio o API, endpoint u operación, equipo owner, smoke sugerido, fuente y vigencia. Cada dato o relación se marca como `confirmado`, `parcial` o `desconocido`; el RAG no completa información faltante ni inventa relaciones. Un smoke sugerido se etiqueta como sugerencia y no se confunde con un test case o evidencia histórica existente.
+
 ## Arquitectura
 
 ```text
@@ -88,10 +90,18 @@ Completá `.env` con tus valores locales:
 ```dotenv
 OPENAI_API_KEY=your-key-here
 EMBEDDING_MODEL=text-embedding-3-small
-RESPONSE_MODEL=your-response-model
+RESPONSE_MODEL=<modelo-habilitado-para-tu-cuenta>
 ```
 
-`.env` nunca debe subirse al repositorio, incluirse en capturas, salidas, documentación o demo web. La key se lee desde variables de entorno y no se imprime en logs.
+`OPENAI_API_KEY` y `RESPONSE_MODEL` deben reemplazarse sólo en tu `.env` local; el modelo de respuesta debe estar habilitado para tu cuenta. `.env` nunca debe subirse al repositorio, incluirse en capturas, salidas, documentación o demo web. La key se lee desde variables de entorno y no se imprime en logs.
+
+Antes de integrar embeddings o generación, validá la configuración sin crear un cliente ni hacer una llamada de red:
+
+```powershell
+.\.venv\Scripts\python.exe -m src.config
+```
+
+El chequeo escribe errores seguros por `stderr` si una variable falta, está vacía o conserva un placeholder. La primera llamada real a OpenAI requiere aprobación explícita: revisar primero disponibilidad del modelo y costo, y aprobar cualquier carga de saldo, cambio a un modelo pago o recarga automática.
 
 ## Uso
 
@@ -132,11 +142,14 @@ Cada consulta devuelve exactamente tres claves de primer nivel:
 
 `system_answer` debe citar los IDs que respaldan la recomendación. Si la recuperación no entrega evidencia suficiente, debe abstenerse de forma explícita. No se generan bugs ni test cases nuevos.
 
+El contrato de primer nivel se mantiene exactamente igual. La búsqueda MVP sigue separando `bug` y `test_case`; cuando exista, la metadata técnica se conserva dentro de cada objeto de `chunks_related`, sin crear filtros técnicos nuevos.
+
 ## Base de conocimiento y recuperación
 
 - Fuente: `data/faq_document.txt` en UTF-8.
 - Contenido mínimo: 15 bugs ficticios, 20 test cases existentes y una introducción funcional del dominio.
-- Chunking: un registro QA completo por chunk para conservar ID, módulo, pasos, resultado esperado y trazabilidad.
+- Metadata técnica opcional y trazable: dominio, servicio/API, endpoint/operación, owner, smoke sugerido, fuente, vigencia y estado `confirmado`/`parcial`/`desconocido`.
+- Chunking: un registro QA completo por chunk para conservar ID, módulo, pasos, resultado esperado, metadata respaldada y trazabilidad.
 - Tamaño: entre 50 y 500 tokens por chunk.
 - Recuperación: similitud coseno en una colección local de Chroma.
 - Filtros: búsquedas separadas por `bug` y `test_case`.
@@ -172,6 +185,7 @@ Los directorios `.venv`, `.env`, cachés, índices locales de Chroma y salidas r
 - Las consultas sin respaldo producen abstención.
 - La demo web es estática y no contiene API keys, backend ni llamadas a OpenAI.
 - No hay SQL, Docker, autenticación, backend público, agentes múltiples ni frontend con frameworks dentro de este alcance.
+- Un conector externo queda fuera de los cinco sprints. Se evaluará más adelante como integración *read-only*, con normalización y preservación de fuente, vigencia y estado de evidencia, sin consultas externas en vivo por cada pregunta.
 
 ## Documentación relacionada
 
