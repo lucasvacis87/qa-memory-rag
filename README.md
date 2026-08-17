@@ -8,9 +8,9 @@ evidencia no alcanza, se abstiene.
 
 - Fuente UTF-8 de 3.600+ palabras: 15 bugs, 22 test cases y seis módulos.
 - Un chunk completo por registro con metadata técnica *evidence-only*.
-- Embeddings `text-embedding-3-small` y colección Chroma local con similitud coseno.
+- Embeddings `text-embedding-3-small` mediante LangChain y colección Chroma local con similitud coseno.
 - Hasta dos bugs y dos test cases por consulta.
-- Generación con Responses API y `gpt-5.4-nano`.
+- Orquestación LangChain con Responses API, Structured Outputs y `gpt-5.4-nano`.
 - JSON con exactamente `user_question`, `system_answer` y `chunks_related`.
 - Tests offline, evaluador determinístico, ejemplos y [demo estática](https://lucasvacis87.github.io/qa-memory-rag/).
 
@@ -27,8 +27,8 @@ flowchart TD
         B["Parsing y validación<br/>estructura, IDs y relaciones"]
         C["Chunking semántico<br/>1 registro QA = 1 chunk completo"]
         D["Mapeo de metadata<br/>tipo, módulo, relaciones y evidencia"]
-        E["Modelo de embeddings<br/>text-embedding-3-small"]
-        F[("Base vectorial ChromaDB<br/>37 vectores + chunks + metadata")]
+        E["LangChain OpenAIEmbeddings<br/>text-embedding-3-small"]
+        F[("langchain-chroma + ChromaDB<br/>37 vectores + chunks + metadata")]
 
         A --> B --> C --> D
         C --> E
@@ -43,7 +43,7 @@ flowchart TD
         J["Recuperación top-k por tipo<br/>hasta 2 bugs + 2 test cases"]
         K{"¿Hay evidencia<br/>suficiente?"}
         L["Armado del contexto<br/>sólo chunks recuperados"]
-        M["LLM con Responses API<br/>gpt-5.4-nano"]
+        M["ChatPromptTemplate + ChatOpenAI<br/>Responses API + Structured Outputs"]
         N{"Guardrail determinístico<br/>¿todos los IDs fueron recuperados?"}
         O["JSON trazable<br/>user_question<br/>system_answer<br/>chunks_related"]
         P["Abstención segura"]
@@ -60,10 +60,23 @@ flowchart TD
 
 El **chunking** conserva cada registro QA completo para no separar el ID de sus pasos,
 relaciones y evidencia. El **mapeo de metadata** agrega campos filtrables y trazables al chunk.
-Los **embeddings** convierten chunks y preguntas en vectores comparables. ChromaDB funciona
-como **base vectorial** y ejecuta recuperación ANN con distancia coseno. El **LLM** no consulta
-la fuente completa: recibe solamente el contexto recuperado. Finalmente, una validación ajena
-al modelo bloquea IDs no presentes y fuerza una abstención si la respuesta no está fundamentada.
+Los **embeddings** convierten chunks y preguntas en vectores comparables. `langchain-chroma`
+conecta el pipeline con ChromaDB, que persiste la **base vectorial** y ejecuta recuperación ANN
+con distancia coseno. `ChatPromptTemplate` arma el contexto y `ChatOpenAI` llama explícitamente
+a Responses API con salida estructurada. El **LLM** no consulta la fuente completa: recibe
+solamente los chunks recuperados. Finalmente, una validación Python ajena al modelo bloquea
+IDs no presentes y fuerza una abstención si la respuesta no está fundamentada.
+
+### Responsabilidades de las tecnologías
+
+| Tecnología | Responsabilidad |
+| --- | --- |
+| Python | CLI, configuración, modelos de dominio, guardrails y contrato JSON. |
+| LangChain | Interfaces y composición del pipeline de embeddings, recuperación, prompt y generación. |
+| OpenAI | Embeddings semánticos y redacción estructurada con el modelo configurado. |
+| ChromaDB | Persistencia local y búsqueda vectorial filtrada por tipo de registro. |
+| tiktoken | Estimación separada de tokens y costos. |
+| pytest | Validación offline mediante embeddings y respuestas determinísticas. |
 
 ## Requisitos e instalación
 
@@ -104,8 +117,8 @@ en `src/pricing.py` y conviene verificarlos antes de ejecutar llamadas pagas.
 ```text
 data/faq_document.txt       fuente ficticia
 src/source.py               parser y validación
-src/index.py                Chroma y recuperación
-src/providers.py            OpenAI y dobles offline
+src/index.py                langchain-chroma, persistencia y recuperación
+src/providers.py            LangChain, OpenAI y dobles offline
 src/rag.py                  pipeline y guardrail de IDs
 src/evaluation.py           evaluador determinístico
 src/cli.py                  consola

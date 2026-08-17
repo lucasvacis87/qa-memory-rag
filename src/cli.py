@@ -11,7 +11,7 @@ from .config import ConfigurationError, Settings, load_settings
 from .evaluation import evaluate
 from .index import IndexUnavailableError, QAIndex
 from .pricing import embedding_cost
-from .providers import OpenAIAnswerProvider, OpenAIEmbeddingProvider
+from .providers import LangChainAnswerProvider, create_openai_embeddings
 from .rag import ask
 from .source import load_records, record_to_chunk
 
@@ -22,7 +22,7 @@ ROOT = Path(__file__).parents[1]
 def _runtime() -> tuple[Settings, QAIndex]:
     """Crea la configuración y el índice usados por la consola."""
     settings = load_settings(ROOT / ".env")
-    embeddings = OpenAIEmbeddingProvider(settings.openai_api_key, settings.embedding_model)
+    embeddings = create_openai_embeddings(settings.openai_api_key, settings.embedding_model)
     return settings, QAIndex(ROOT / settings.chroma_path, settings.collection_name, embeddings)
 
 
@@ -55,7 +55,10 @@ def _run_command(args: argparse.Namespace) -> None:
                           "estimated_tokens": estimate.input_tokens,
                           "estimated_usd": round(estimate.estimated_usd, 8)}, ensure_ascii=False))
         return
-    provider = OpenAIAnswerProvider(settings.openai_api_key, settings.response_model)
+    provider = LangChainAnswerProvider.from_openai(
+        settings.openai_api_key,
+        settings.response_model,
+    )
     response = ask(args.question, index, provider, settings.relevance_threshold)
     if args.evaluate:
         print(json.dumps({"evaluation": evaluate(response).__dict__}, ensure_ascii=False), file=sys.stderr)

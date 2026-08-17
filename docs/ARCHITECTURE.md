@@ -1,19 +1,28 @@
 # Arquitectura
 
 ```text
-faq_document.txt -> parser/validación -> chunks completos -> embeddings OpenAI
-       -> colección Chroma (coseno) -> búsqueda bug + búsqueda test_case
-       -> contexto recuperado -> Responses API -> validación determinística -> JSON
+faq_document.txt -> parser/validación -> chunks completos -> LangChain OpenAIEmbeddings
+       -> langchain-chroma -> colección ChromaDB (coseno)
+       -> búsqueda bug + búsqueda test_case -> contexto recuperado
+       -> ChatPromptTemplate -> ChatOpenAI/Responses API/Structured Outputs
+       -> validación determinística -> JSON
 ```
 
 ## Decisiones
 
 - Un registro QA completo equivale a un chunk. Así se conservan ID, pasos, relaciones y metadata.
-- `text-embedding-3-small` genera vectores; Chroma los persiste y calcula similitud coseno.
+- `OpenAIEmbeddings` de LangChain usa `text-embedding-3-small`; ChromaDB persiste los vectores
+  mediante `langchain-chroma` y calcula distancia coseno.
 - Las búsquedas se filtran por `bug` y `test_case` y devuelven hasta dos elementos de cada tipo.
-- `gpt-5.4-nano` redacta una respuesta estructurada usando solamente el contexto recuperado.
+- `ChatPromptTemplate` compone instrucciones, pregunta y evidencia recuperada.
+- `ChatOpenAI` usa explícitamente Responses API y `gpt-5.4-nano`; Structured Outputs exige el
+  campo interno `system_answer` antes de construir el contrato público.
 - Una validación posterior rechaza cualquier ID que no corresponda a un chunk recuperado.
-- Los tests inyectan embeddings y generación determinísticos: validan el flujo sin red ni costo.
+- Los tests inyectan `Embeddings` y `Runnable` determinísticos: validan el flujo sin red ni costo.
+
+LangChain orquesta integraciones, pero no decide si una respuesta está respaldada. El umbral,
+la separación por tipo, la validación de IDs, la abstención y el JSON final siguen siendo reglas
+determinísticas del proyecto.
 
 ## Contrato público
 
