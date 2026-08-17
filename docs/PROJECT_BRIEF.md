@@ -70,7 +70,8 @@ Un smoke sugerido sólo puede derivarse de evidencia recuperada y se debe etique
 | Segmentación | Por registro QA completo | Conserva ID, pasos, resultados y trazabilidad. |
 | Demo | HTML, CSS y JavaScript nativos | Puede publicarse estáticamente sin backend ni secretos. |
 
-Estas son decisiones de diseño, no componentes implementados todavía.
+Estas decisiones están implementadas. La suite offline valida el flujo completo sin consumo;
+la ruta productiva usa los modelos configurados en `.env`.
 
 ## Fuera de alcance
 
