@@ -6,6 +6,16 @@
 2. Revisar `docs/GUARDRAILS.md` antes de trabajar con datos, APIs o publicación.
 3. Avanzar una historia a la vez, según `docs/ROADMAP.md`.
 
+## Verificación de GitHub CLI en Codex
+
+- En el entorno aislado, `gh auth status` puede fallar por bloqueo de red y mostrar el token
+  como inválido aunque siga vigente.
+- Antes de pedir logout, login o regeneración de credenciales, repetir `gh auth status -h github.com`
+  con acceso de red autorizado y revisar el error real.
+- No ejecutar `gh auth token`, `--show-token` ni comandos que impriman la credencial.
+- En Windows, el token normal de `gh` vive en el llavero seguro (`keyring`); `hosts.yml` conserva
+  la configuración del host y sólo contiene el token si se usó almacenamiento inseguro.
+
 ## Principios de implementación
 
 - Mantener Python simple, modular y legible; cada función debe tener una responsabilidad clara.

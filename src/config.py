@@ -26,6 +26,9 @@ class Settings:
     openai_api_key: str
     embedding_model: str
     response_model: str
+    chroma_path: str = "chroma_db"
+    collection_name: str = "qa_memory"
+    relevance_threshold: float = 0.20
 
 
 _REQUIRED_VARIABLES = (
@@ -39,6 +42,7 @@ _PLACEHOLDER_VALUES = {
     "change-me",
     "changeme",
     "placeholder",
+    "definir_antes_del_primer_uso",
 }
 
 
@@ -73,6 +77,9 @@ def validate_settings(values: Mapping[str, str | None]) -> Settings:
         openai_api_key=validated["OPENAI_API_KEY"],
         embedding_model=validated["EMBEDDING_MODEL"],
         response_model=validated["RESPONSE_MODEL"],
+        chroma_path=(values.get("CHROMA_PATH") or "chroma_db").strip(),
+        collection_name=(values.get("COLLECTION_NAME") or "qa_memory").strip(),
+        relevance_threshold=float(values.get("RELEVANCE_THRESHOLD") or "0.20"),
     )
 
 
