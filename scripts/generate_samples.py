@@ -1,4 +1,4 @@
-"""Genera ejemplos y datos de demo sin red ni consumo de API."""
+"""Generate demo examples and data without network access or API usage."""
 
 from __future__ import annotations
 
@@ -30,10 +30,10 @@ CASES = [
 
 
 def main() -> None:
-    """Regenera ejemplos públicos y datos de la demo sin usar APIs."""
+    """Regenerate public examples and demo data without using APIs."""
     records = load_records(ROOT / "data" / "faq_document.txt")
-    # Chroma mantiene archivos mapeados brevemente en Windows; la limpieza del
-    # temporal no debe invalidar la generación ya completada.
+    # Chroma keeps mapped files briefly on Windows; temporary-directory cleanup
+    # must not invalidate the completed generation.
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
         index = QAIndex(Path(directory), "samples", DeterministicEmbeddingProvider())
         index.rebuild(records)

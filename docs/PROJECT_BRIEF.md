@@ -1,90 +1,90 @@
-# Definición del proyecto
+# Project brief
 
-## Problema
+## Problem
 
-En QA, encontrar antecedentes de un incidente y decidir qué regresión ejecutar puede requerir revisar tickets y casos de prueba dispersos. QA Memory RAG busca reducir esa búsqueda manual usando una base de conocimiento ficticia, trazable y consultable semánticamente.
+In QA, finding prior incidents and deciding which regression coverage to run can require reviewing scattered tickets and test cases. QA Memory RAG reduces that manual search through a fictional, traceable, semantically searchable knowledge base.
 
-## Objetivo
+## Objective
 
-Recibir una situación reportada por un tester, recuperar bugs históricos similares y test cases existentes relacionados, y devolver una recomendación fundada en esa evidencia.
+Accept a situation reported by a tester, retrieve similar historical bugs and related existing test cases, and return a recommendation grounded in that evidence.
 
-La respuesta debe citar los IDs recuperados. Si no hay evidencia suficiente, debe abstenerse en lugar de inventar una recomendación.
+The response must cite retrieved IDs. When evidence is insufficient, it must abstain rather than invent a recommendation.
 
-## Usuarios
+## Users
 
-- Tester manual que investiga un incidente o prepara una regresión.
-- QA Automation Engineer que necesita antecedentes para elegir cobertura existente.
-- Revisor académico que evalúa el flujo RAG, la trazabilidad y la salida JSON.
+- Manual testers investigating an incident or preparing a regression.
+- QA Automation Engineers who need prior evidence to select existing coverage.
+- Academic reviewers assessing the RAG flow, traceability, and JSON output.
 
-## Dominio ficticio
+## Fictional domain
 
-La aplicación representa un banco digital con seis módulos:
+The application represents a digital bank with six modules:
 
-1. Autenticación y bloqueo de usuarios.
-2. Saldos y movimientos.
-3. Transferencias.
-4. Pago de servicios.
-5. Tarjetas y límites.
-6. Notificaciones y comprobantes.
+1. Authentication and account lockout.
+2. Balances and transactions.
+3. Transfers.
+4. Bill payments.
+5. Cards and limits.
+6. Notifications and receipts.
 
-## Casos de uso
+## Use cases
 
-| ID | Situación reportada | Evidencia esperada | Resultado esperado |
+| ID | Reported situation | Expected evidence | Expected outcome |
 | --- | --- | --- | --- |
-| UC-01 | El usuario se bloquea antes del quinto intento. | Bug y casos de autenticación. | Explicar el antecedente y recomendar regresión de intentos y desbloqueo. |
-| UC-02 | Una transferencia aprobada no aparece en movimientos. | Bug y casos de saldos e historial. | Relacionar la operación con la consistencia del historial. |
-| UC-03 | Una transferencia rechazada descuenta el saldo. | `BUG-TRF-001`, `TC-TRF-004` y `TC-TRF-007`. | Identificar el antecedente crítico y recomendar regresión de rechazo y reversión. |
-| UC-04 | Un pago se duplica después de reintentar. | Bug y casos de pagos e idempotencia. | Recomendar validar que exista un único débito. |
-| UC-05 | El límite de tarjeta cambia en la interfaz, pero no en backend. | Bug y casos de tarjetas. | Relacionar los controles de interfaz y backend. |
-| UC-06 | Una operación exitosa no genera comprobante o notificación. | Bug y casos de notificaciones. | Recomendar validar emisión y visualización del comprobante. |
+| UC-01 | The user is locked before the fifth attempt. | Authentication bug and test cases. | Explain the precedent and recommend attempt and unlock regression coverage. |
+| UC-02 | An approved transfer does not appear in transactions. | Balance and history bug and test cases. | Relate the operation to history consistency. |
+| UC-03 | A rejected transfer deducts the balance. | `BUG-TRF-001`, `TC-TRF-004`, and `TC-TRF-007`. | Identify the critical precedent and recommend rejection and reversal regression coverage. |
+| UC-04 | A payment is duplicated after retrying. | Payment and idempotency bug and test cases. | Recommend verifying that only one debit exists. |
+| UC-05 | A card limit changes in the UI but not in the backend. | Card bug and test cases. | Relate UI and backend controls. |
+| UC-06 | A successful operation does not generate a receipt or notification. | Notification bug and test cases. | Recommend validating receipt issuance and display. |
 
-También se validarán dos comportamientos transversales:
+Two cross-cutting behaviours are also validated:
 
-- Una consulta sobre una funcionalidad inexistente debe producir una abstención clara.
-- Una consulta de regresión debe recomendar exclusivamente test cases existentes, con sus IDs.
+- A query about a nonexistent capability must produce a clear abstention.
+- A regression query must recommend only existing test cases, with their IDs.
 
-## Alcance
+## Scope
 
-- Un documento de texto plano: `data/faq_document.txt`.
-- Al menos 15 bugs ficticios, 20 test cases y una introducción funcional de los módulos.
-- Un catálogo técnico mínimo *evidence-only* para los registros ficticios: dominio funcional, servicio o API, endpoint u operación, equipo owner, smoke sugerido, fuente y vigencia.
-- Cada dato o relación técnica se expresa como `confirmado`, `parcial` o `desconocido`: sólo lo explícito en la fuente se considera confirmado; no se completan huecos por inferencia.
-- Un chunk semántico por bug o test case, con metadata de ID, tipo, módulo y los datos técnicos que estén respaldados.
-- Una colección local de Chroma con búsqueda por similitud coseno.
-- Dos búsquedas filtradas: `bug` y `test_case`.
-- Hasta dos bugs y dos test cases por consulta.
-- Una salida JSON con exactamente `user_question`, `system_answer` y `chunks_related`.
+- One plain-text document: `data/faq_document.txt`.
+- At least 15 fictional bugs, 20 test cases, and a functional introduction to the modules.
+- A minimal *evidence-only* technical catalogue for fictional records: functional domain, service or API, endpoint or operation, owning team, suggested smoke check, source, and validity.
+- Each technical item or relationship is marked `confirmed`, `partial`, or `unknown`: only what the source explicitly states is confirmed, and gaps are not filled by inference.
+- One semantic chunk per bug or test case, with ID, type, module, and supported technical metadata.
+- A local Chroma collection using cosine-similarity search.
+- Two filtered searches: `bug` and `test_case`.
+- Up to two bugs and two test cases per query.
+- A JSON response containing exactly `user_question`, `system_answer`, and `chunks_related`.
 
-La búsqueda MVP continúa separando `bug` y `test_case`. La metadata técnica no agrega filtros en esta primera versión: se preserva dentro de cada elemento de `chunks_related` para que la respuesta sea auditable sin alterar el contrato público.
+The MVP keeps `bug` and `test_case` retrieval separate. Technical metadata adds no filters in this first version; it remains inside each `chunks_related` item so the response remains auditable without changing the public contract.
 
-Un smoke sugerido sólo puede derivarse de evidencia recuperada y se debe etiquetar como sugerencia; no equivale a un test case existente ni a evidencia histórica. Si esa evidencia no alcanza, el sistema debe abstenerse.
+A suggested smoke check can only derive from retrieved evidence and must be labelled as a suggestion; it is not an existing test case or historical evidence. When that evidence is insufficient, the system must abstain.
 
-## Decisiones técnicas
+## Technical decisions
 
-| Decisión | Elección | Motivo |
+| Decision | Choice | Rationale |
 | --- | --- | --- |
-| Lenguaje | Python 3.12 | Es adecuado para el módulo y mantiene el proyecto accesible. |
-| Embeddings | `text-embedding-3-small` | Reduce costo y cubre la necesidad educativa. |
-| Generación | Un modelo económico de OpenAI | Resume la evidencia recuperada sin ampliar el alcance. |
-| Vector store | Chroma local | Permite persistir y reabrir el índice sin infraestructura externa. |
-| Segmentación | Por registro QA completo | Conserva ID, pasos, resultados y trazabilidad. |
-| Demo | HTML, CSS y JavaScript nativos | Puede publicarse estáticamente sin backend ni secretos. |
+| Language | Python 3.12 | Appropriate for the module and keeps the project accessible. |
+| Embeddings | `text-embedding-3-small` | Reduces cost and meets the educational need. |
+| Generation | A cost-efficient OpenAI model | Summarizes retrieved evidence without expanding scope. |
+| Vector store | Local Chroma | Persists and reopens the index without external infrastructure. |
+| Chunking | Per complete QA record | Preserves IDs, steps, results, and traceability. |
+| Demo | Native HTML, CSS, and JavaScript | Can be statically published without backend or secrets. |
 
-Estas decisiones están implementadas. La suite offline valida el flujo completo sin consumo;
-la ruta productiva usa los modelos configurados en `.env`.
+These decisions are implemented. The offline suite validates the complete flow without consumption;
+the production path uses the models configured in `.env`.
 
-## Fuera de alcance
+## Out of scope
 
-- Datos reales, tickets reales, información personal o bancaria.
-- Generación de nuevos test cases o bugs.
-- Base SQL, Docker, autenticación, backend público o agentes múltiples.
-- Frontend con React, Vite, npm o llamadas directas a OpenAI desde el navegador.
-- Conectores a gestores de tickets o fuentes externas.
+- Real data, real tickets, personal or banking information.
+- Generation of new test cases or bugs.
+- SQL database, Docker, authentication, public backend, or multiple agents.
+- A frontend using React, Vite, npm, or direct OpenAI calls from the browser.
+- Ticket-manager or external-source connectors.
 
-## Criterios de éxito
+## Success criteria
 
-- El RAG recupera evidencia relevante en los seis casos de uso.
-- Las recomendaciones solo mencionan IDs presentes en la fuente.
-- Las relaciones técnicas, owners, endpoints y smokes no se inventan y conservan su fuente, vigencia y estado de evidencia.
-- Las consultas sin evidencia reciben abstención, no contenido inventado.
-- El proyecto cumple la consigna: 20+ chunks, embeddings, búsqueda vectorial, respuesta JSON y documentación reproducible.
+- The RAG retrieves relevant evidence for the six use cases.
+- Recommendations mention only IDs present in the source.
+- Technical relationships, owners, endpoints, and smoke checks are not invented and preserve their source, validity, and evidence state.
+- Queries without evidence receive an abstention, not invented content.
+- The project meets the brief: 20+ chunks, embeddings, vector search, JSON response, and reproducible documentation.

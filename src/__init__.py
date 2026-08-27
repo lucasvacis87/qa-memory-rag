@@ -1,1 +1,1 @@
-"""Código fuente de QA Memory RAG."""
+"""QA Memory RAG source code."""
