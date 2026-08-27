@@ -1,4 +1,4 @@
-"""Orquestación RAG con validación determinística posterior a la generación."""
+"""RAG orchestration with deterministic validation after generation."""
 
 from __future__ import annotations
 
@@ -14,12 +14,12 @@ ABSTENTION = "No hay evidencia suficiente en la base de conocimiento para respon
 
 
 def _context(chunks: list[RetrievedChunk]) -> str:
-    """Une los chunks recuperados para formar el contexto del modelo."""
+    """Join retrieved chunks to form the model context."""
     return "\n\n".join(chunk.content for chunk in chunks)
 
 
 def _answer_is_grounded(answer: str, chunks: list[RetrievedChunk]) -> bool:
-    """Verifica que la respuesta cite sólo IDs recuperados."""
+    """Verify that the response cites only retrieved IDs."""
     available = {chunk.id for chunk in chunks}
     cited = set(ID_PATTERN.findall(answer))
     return bool(cited) and cited <= available
@@ -29,7 +29,7 @@ def ask(
     question: str, index: QAIndex, answer_provider: AnswerProvider,
     threshold: float = 0.45,
 ) -> RAGResponse:
-    """Recupera evidencia, genera una respuesta y valida sus IDs."""
+    """Retrieve evidence, generate a response, and validate its IDs."""
     if not question.strip():
         raise ValueError("La pregunta no puede estar vacía")
     bugs = index.search(question, "bug", threshold=threshold)
@@ -46,10 +46,10 @@ def ask(
 
 
 class ExtractiveAnswerProvider:
-    """Generador offline para pruebas y demo reproducible basado sólo en evidencia."""
+    """Offline generator for evidence-only tests and reproducible demos."""
 
     def answer(self, question: str, context: str) -> str:
-        """Resume los IDs recuperados para demos y pruebas offline."""
+        """Summarize retrieved IDs for demos and offline tests."""
         ids = list(dict.fromkeys(re.findall(r"(?m)^(?:BUG|TC)-[A-Z]{3}-\d{3}", context)))
         selected = ids[:4]
         if not selected:

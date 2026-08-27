@@ -1,4 +1,4 @@
-"""Índice local Chroma administrado mediante la integración de LangChain."""
+"""Local Chroma index managed through the LangChain integration."""
 
 from __future__ import annotations
 
@@ -13,23 +13,23 @@ from .source import record_to_chunk
 
 
 class IndexUnavailableError(RuntimeError):
-    """Indica que todavía no existe una colección consultable."""
+    """Indicate that a queryable collection does not exist yet."""
 
     pass
 
 
 class QAIndex:
-    """Construye y consulta la colección vectorial de registros QA."""
+    """Build and query the QA-record vector collection."""
 
     def __init__(self, path: Path, collection_name: str, embeddings: Embeddings) -> None:
-        """Abre un vector store Chroma persistente con embeddings LangChain."""
+        """Open a persistent Chroma vector store with LangChain embeddings."""
         self.path = path
         self.collection_name = collection_name
         self.embeddings = embeddings
         self.store = self._open_store()
 
     def _open_store(self) -> Chroma:
-        """Crea o abre la colección configurada usando distancia coseno."""
+        """Create or open the configured collection using cosine distance."""
         return Chroma(
             collection_name=self.collection_name,
             embedding_function=self.embeddings,
@@ -38,11 +38,11 @@ class QAIndex:
         )
 
     def _collection_count(self) -> int:
-        """Cuenta IDs persistidos sin exponer detalles internos de Chroma."""
+        """Count persisted IDs without exposing Chroma internals."""
         return len(self.store.get(include=[])["ids"])
 
     def rebuild(self, records: list[QARecord]) -> int:
-        """Reemplaza la colección e indexa todos los registros."""
+        """Replace the collection and index all records."""
         self.store.delete_collection()
         self.store = self._open_store()
         documents = [Document(
@@ -54,7 +54,7 @@ class QAIndex:
         return self._collection_count()
 
     def count(self) -> int:
-        """Devuelve la cantidad de chunks indexados."""
+        """Return the number of indexed chunks."""
         try:
             count = self._collection_count()
         except Exception as error:
@@ -67,7 +67,7 @@ class QAIndex:
         self, question: str, record_type: RecordType, limit: int = 2,
         threshold: float = 0.45,
     ) -> list[RetrievedChunk]:
-        """Recupera los chunks más similares de un tipo determinado."""
+        """Retrieve the most similar chunks of a given type."""
         self.count()
         result = self.store.similarity_search_with_score(
             question,

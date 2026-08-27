@@ -1,4 +1,4 @@
-"""Evaluación offline determinística de trazabilidad y relevancia."""
+"""Deterministic offline evaluation of traceability and relevance."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ def evaluate(
     response: RAGResponse, expected_ids: set[str] | None = None,
     expect_abstention: bool | None = None,
 ) -> Evaluation:
-    """Puntúa trazabilidad, evidencia esperada y abstención."""
+    """Score traceability, expected evidence, and abstention."""
     available = {chunk.id for chunk in response.chunks_related}
     cited = set(ID_PATTERN.findall(response.system_answer))
     valid_ids = cited <= available

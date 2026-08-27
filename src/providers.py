@@ -1,4 +1,4 @@
-"""Integraciones LangChain para embeddings y generación, reales e inyectables."""
+"""LangChain integrations for embeddings and generation, both live and injectable."""
 
 from __future__ import annotations
 
@@ -24,32 +24,32 @@ SYSTEM_PROMPT = (
 
 
 class StructuredAnswer(TypedDict):
-    """Salida interna exigida al modelo antes de construir el contrato público."""
+    """Internal output required from the model before building the public contract."""
 
     system_answer: str
 
 
 class AnswerProvider(Protocol):
-    """Contrato mínimo para generar una respuesta con contexto."""
+    """Minimum contract for generating a response from context."""
 
     def answer(self, question: str, context: str) -> str:
-        """Responde una pregunta usando únicamente el contexto."""
+        """Answer a question using only the provided context."""
 
         ...
 
 
 class DeterministicEmbeddingProvider(Embeddings):
-    """Embedding lexical estable para tests offline; no reemplaza al proveedor real."""
+    """Stable lexical embedding for offline tests; it does not replace the live provider."""
 
     _STOPWORDS = {"de", "del", "la", "las", "el", "los", "un", "una", "y", "o", "que",
                   "con", "sin", "por", "para", "en", "al", "se", "su", "sus", "es"}
 
     def __init__(self, dimensions: int = 1024) -> None:
-        """Define la dimensión fija de los vectores de prueba."""
+        """Set the fixed dimension for test vectors."""
         self.dimensions = dimensions
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        """Genera vectores léxicos reproducibles sin usar red."""
+        """Generate reproducible lexical vectors without network access."""
         vectors: list[list[float]] = []
         for text in texts:
             vector = [0.0] * self.dimensions
@@ -64,25 +64,25 @@ class DeterministicEmbeddingProvider(Embeddings):
         return vectors
 
     def embed_query(self, text: str) -> list[float]:
-        """Genera el vector de una consulta con la misma estrategia que los documentos."""
+        """Generate a query vector with the same strategy used for documents."""
         return self.embed_documents([text])[0]
 
 
 def create_openai_embeddings(api_key: str, model: str) -> OpenAIEmbeddings:
-    """Crea la integración LangChain de embeddings sin realizar llamadas todavía."""
+    """Create the LangChain embeddings integration without making calls yet."""
     return OpenAIEmbeddings(api_key=api_key, model=model)
 
 
 class LangChainAnswerProvider:
-    """Ejecuta una chain LangChain con prompt y salida estructurada."""
+    """Run a LangChain chain with a prompt and structured output."""
 
     def __init__(self, chain: Runnable[dict[str, str], StructuredAnswer]) -> None:
-        """Recibe una chain inyectable para mantener las pruebas completamente offline."""
+        """Accept an injectable chain to keep tests fully offline."""
         self.chain = chain
 
     @classmethod
     def from_openai(cls, api_key: str, model: str) -> "LangChainAnswerProvider":
-        """Compone ChatPromptTemplate, Responses API y Structured Outputs."""
+        """Compose ChatPromptTemplate, the Responses API, and Structured Outputs."""
         prompt = ChatPromptTemplate.from_messages([
             ("system", SYSTEM_PROMPT),
             ("human", "Pregunta: {question}\n\nEvidencia:\n{context}"),
@@ -100,7 +100,7 @@ class LangChainAnswerProvider:
         return cls(prompt | structured_llm)
 
     def answer(self, question: str, context: str) -> str:
-        """Invoca la chain y devuelve solamente la respuesta interna validada."""
+        """Invoke the chain and return only the validated internal response."""
         result = self.chain.invoke({"question": question, "context": context})
         answer = result.get("system_answer")
         if not isinstance(answer, str):

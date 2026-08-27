@@ -1,7 +1,7 @@
-"""Configuración local y segura para usar OpenAI y Chroma.
+"""Safe local configuration for OpenAI and Chroma.
 
-Este módulo no crea clientes ni realiza llamadas de red. La carga de ``.env``
-ocurre únicamente al invocar :func:`load_settings`.
+This module does not create clients or make network calls. ``.env`` loading
+only occurs when :func:`load_settings` is invoked.
 """
 
 from __future__ import annotations
@@ -16,12 +16,12 @@ from dotenv import load_dotenv
 
 
 class ConfigurationError(ValueError):
-    """Indica una configuración local incompleta sin incluir valores sensibles."""
+    """Indicate incomplete local configuration without including sensitive values."""
 
 
 @dataclass(frozen=True)
 class Settings:
-    """Valores necesarios para embeddings, generación y almacenamiento local."""
+    """Values required for embeddings, generation, and local storage."""
 
     openai_api_key: str
     embedding_model: str
@@ -52,7 +52,7 @@ _PLACEHOLDER_VALUES = {
 
 
 def _is_placeholder(value: str) -> bool:
-    """Indica si un valor conserva el texto de ejemplo."""
+    """Determine whether a value retains placeholder text."""
     normalized = value.strip().lower()
     return (
         normalized in _PLACEHOLDER_VALUES
@@ -62,7 +62,7 @@ def _is_placeholder(value: str) -> bool:
 
 
 def _read_required_value(name: str, value: str | None) -> str:
-    """Obtiene una variable obligatoria o informa cómo configurarla."""
+    """Get a required variable or explain how to configure it."""
     if value is None or not value.strip():
         raise ConfigurationError(
             f"Falta configurar {name}. Completá tu archivo .env local antes de continuar."
@@ -75,7 +75,7 @@ def _read_required_value(name: str, value: str | None) -> str:
 
 
 def validate_settings(values: Mapping[str, str | None]) -> Settings:
-    """Valida valores ya cargados, sin leer archivos ni usar red."""
+    """Validate loaded values without reading files or using the network."""
 
     validated = {
         name: _read_required_value(name, values.get(name)) for name in _REQUIRED_VARIABLES
@@ -91,10 +91,10 @@ def validate_settings(values: Mapping[str, str | None]) -> Settings:
 
 
 def load_settings(dotenv_path: Path | None = None) -> Settings:
-    """Carga y valida la configuración sin crear un cliente de OpenAI.
+    """Load and validate configuration without creating an OpenAI client.
 
-    Las variables del sistema tienen prioridad sobre ``.env`` para facilitar
-    ejecución local y pruebas sin modificar archivos de secretos.
+    System variables take precedence over ``.env`` to support local execution
+    and testing without changing secret files.
     """
 
     path = dotenv_path if dotenv_path is not None else Path.cwd() / ".env"
@@ -104,7 +104,7 @@ def load_settings(dotenv_path: Path | None = None) -> Settings:
 
 
 def main() -> int:
-    """Ejecuta un chequeo local de configuración sin usar red ni secretos."""
+    """Run a local configuration check without using the network or secrets."""
 
     try:
         load_settings()

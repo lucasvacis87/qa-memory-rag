@@ -1,37 +1,38 @@
-# Arquitectura
+# Architecture
 
 ```text
-faq_document.txt -> parser/validación -> chunks completos -> LangChain OpenAIEmbeddings
-       -> langchain-chroma -> colección ChromaDB (coseno)
-       -> búsqueda bug + búsqueda test_case -> contexto recuperado
+faq_document.txt -> parser/validation -> complete chunks -> LangChain OpenAIEmbeddings
+       -> langchain-chroma -> ChromaDB collection (cosine)
+       -> bug search + test_case search -> retrieved context
        -> ChatPromptTemplate -> ChatOpenAI/Responses API/Structured Outputs
-       -> validación determinística -> JSON
+       -> deterministic validation -> JSON
 ```
 
-## Decisiones
+## Decisions
 
-- Un registro QA completo equivale a un chunk. Así se conservan ID, pasos, relaciones y metadata.
-- `OpenAIEmbeddings` de LangChain usa `text-embedding-3-small`; ChromaDB persiste los vectores
-  mediante `langchain-chroma` y calcula distancia coseno.
-- Las búsquedas se filtran por `bug` y `test_case` y devuelven hasta dos elementos de cada tipo.
-- `ChatPromptTemplate` compone instrucciones, pregunta y evidencia recuperada.
-- `ChatOpenAI` usa explícitamente Responses API y `gpt-5.4-nano`; Structured Outputs exige el
-  campo interno `system_answer` antes de construir el contrato público.
-- Una validación posterior rechaza cualquier ID que no corresponda a un chunk recuperado.
-- Los tests inyectan `Embeddings` y `Runnable` determinísticos: validan el flujo sin red ni costo.
+- One complete QA record maps to one chunk, preserving its ID, steps, relationships, and metadata.
+- LangChain `OpenAIEmbeddings` uses `text-embedding-3-small`; ChromaDB persists vectors through
+  `langchain-chroma` and uses cosine distance.
+- Searches are filtered by `bug` and `test_case`, returning up to two records of each type.
+- `ChatPromptTemplate` assembles instructions, the question, and retrieved evidence.
+- `ChatOpenAI` explicitly uses the Responses API and `gpt-5.4-nano`; Structured Outputs requires
+  the internal `system_answer` field before the public contract is built.
+- A post-generation validation rejects every ID that does not belong to a retrieved chunk.
+- Tests inject deterministic `Embeddings` and `Runnable` implementations to validate the flow
+  without network access or cost.
 
-LangChain orquesta integraciones, pero no decide si una respuesta está respaldada. El umbral,
-la separación por tipo, la validación de IDs, la abstención y el JSON final siguen siendo reglas
-determinísticas del proyecto.
+LangChain orchestrates integrations; it does not determine whether an answer is supported. The
+threshold, type separation, ID validation, abstention, and final JSON remain deterministic project
+rules.
 
-## Contrato público
+## Public contract
 
-La salida tiene exactamente `user_question`, `system_answer` y `chunks_related`. La metadata
-técnica vive dentro de cada chunk; no altera los filtros ni agrega claves de primer nivel.
+The response contains exactly `user_question`, `system_answer`, and `chunks_related`. Technical
+metadata lives within each chunk; it neither changes filters nor adds top-level keys.
 
-## Fallos seguros
+## Safe failures
 
-- Sin configuración o índice: error operativo por `stderr` y código de salida distinto de cero.
-- Sin evidencia sobre el umbral: abstención sin llamar al generador.
-- ID inventado por el modelo: la respuesta se reemplaza por abstención.
-- Error de red, cuota o modelo: nunca se cambia silenciosamente de proveedor o modelo.
+- Missing configuration or index: operational error to `stderr` and a non-zero exit code.
+- No evidence above the threshold: abstain without invoking the generator.
+- Model-invented ID: replace the response with an abstention.
+- Network, quota, or model error: never silently switch provider or model.

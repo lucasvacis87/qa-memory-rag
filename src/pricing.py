@@ -1,4 +1,4 @@
-"""Conteo y estimación transparente de costos de API."""
+"""Transparent counting and estimation of API costs."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ class UsageEstimate:
 
 
 def count_tokens(text: str, model: str = "text-embedding-3-small") -> int:
-    """Cuenta tokens con la codificación del modelo indicado."""
+    """Count tokens using the specified model encoding."""
     try:
         encoding = tiktoken.encoding_for_model(model)
     except KeyError:
@@ -29,13 +29,13 @@ def count_tokens(text: str, model: str = "text-embedding-3-small") -> int:
 
 
 def embedding_cost(texts: list[str]) -> UsageEstimate:
-    """Estima tokens y costo de indexar una lista de textos."""
+    """Estimate token usage and cost for indexing a list of texts."""
     tokens = sum(count_tokens(text) for text in texts)
     return UsageEstimate(tokens, 0, tokens * EMBEDDING_USD_PER_MILLION / 1_000_000)
 
 
 def generation_cost(input_text: str, output_text: str) -> UsageEstimate:
-    """Estima por separado el costo de entrada y salida del LLM."""
+    """Estimate LLM input and output costs separately."""
     input_tokens = count_tokens(input_text, "gpt-5.4-nano")
     output_tokens = count_tokens(output_text, "gpt-5.4-nano")
     cost = (input_tokens * GENERATION_INPUT_USD_PER_MILLION +

@@ -1,4 +1,4 @@
-"""Interfaz de consola reproducible para construir, consultar y evaluar."""
+"""Reproducible command-line interface for building, querying, and evaluating."""
 
 from __future__ import annotations
 
@@ -20,14 +20,14 @@ ROOT = Path(__file__).parents[1]
 
 
 def _runtime() -> tuple[Settings, QAIndex]:
-    """Crea la configuración y el índice usados por la consola."""
+    """Create the configuration and index used by the command-line interface."""
     settings = load_settings(ROOT / ".env")
     embeddings = create_openai_embeddings(settings.openai_api_key, settings.embedding_model)
     return settings, QAIndex(ROOT / settings.chroma_path, settings.collection_name, embeddings)
 
 
 def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
-    """Define la consola y devuelve los argumentos validados."""
+    """Configure the command-line interface and return validated arguments."""
 
     parser = argparse.ArgumentParser(description="QA Memory RAG evidence-only")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -40,7 +40,7 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
 
 
 def _run_command(args: argparse.Namespace) -> None:
-    """Ejecuta un subcomando y escribe su resultado."""
+    """Run a subcommand and write its result."""
 
     records = load_records(ROOT / "data" / "faq_document.txt")
     if args.command == "validate-source":
@@ -66,7 +66,7 @@ def _run_command(args: argparse.Namespace) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """Ejecuta la consola y transforma errores en códigos de salida."""
+    """Run the command-line interface and convert errors to exit codes."""
 
     try:
         _run_command(_parse_arguments(argv))
