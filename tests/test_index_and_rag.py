@@ -1,7 +1,9 @@
 from pathlib import Path
 
+import pytest
+
 from src.evaluation import evaluate
-from src.index import QAIndex
+from src.index import IndexUnavailableError, QAIndex
 from src.providers import DeterministicEmbeddingProvider
 from src.rag import ABSTENTION, ExtractiveAnswerProvider, ask
 from src.source import load_records
@@ -20,6 +22,12 @@ def _index(tmp_path: Path) -> QAIndex:
     index = QAIndex(tmp_path / "chroma", "test_qa_memory", provider)
     assert index.rebuild(load_records(SOURCE)) == 37
     return index
+
+
+def test_empty_langchain_chroma_collection_is_unavailable(tmp_path: Path) -> None:
+    index = QAIndex(tmp_path / "empty-chroma", "empty", DeterministicEmbeddingProvider())
+    with pytest.raises(IndexUnavailableError, match="build-index"):
+        index.count()
 
 
 def test_index_reopens_and_filters_types(tmp_path: Path) -> None:

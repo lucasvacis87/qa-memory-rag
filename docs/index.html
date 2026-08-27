@@ -1,36 +1,36 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Demo estática y auditable de QA Memory RAG">
+  <meta name="description" content="Static, auditable QA Memory RAG demo">
   <title>QA Memory RAG</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="hero">
-    <p class="eyebrow">Portfolio · IA aplicada a QA</p>
+    <p class="eyebrow">Portfolio · AI applied to QA</p>
     <h1>QA Memory RAG</h1>
-    <p>Recupera bugs y casos de prueba ficticios, recomienda cobertura existente y se abstiene cuando no hay evidencia.</p>
-    <div class="stats"><span>15 bugs</span><span>22 test cases</span><span>6 módulos</span><span>100% ficticio</span></div>
+    <p>Retrieves fictional bugs and test cases, recommends existing coverage, and abstains when there is no evidence.</p>
+    <div class="stats"><span>15 bugs</span><span>22 test cases</span><span>6 modules</span><span>100% fictional</span></div>
   </header>
   <main>
-    <section class="notice" aria-label="Alcance de la demo">
-      <strong>Demo segura:</strong> resultados precalculados. No contiene API keys, backend ni llamadas a OpenAI.
+    <section class="notice" aria-label="Demo scope">
+      <strong>Safe demo:</strong> precomputed results. It contains no API keys, backend, or OpenAI calls.
     </section>
     <section>
-      <div class="section-head"><div><p class="eyebrow">Casos evaluados</p><h2>Evidencia recuperada</h2></div>
-        <label>Elegí un caso<select id="case-select" aria-label="Caso de uso"></select></label></div>
+      <div class="section-head"><div><p class="eyebrow">Evaluated cases</p><h2>Retrieved evidence</h2></div>
+        <label>Choose a case<select id="case-select" aria-label="Use case"></select></label></div>
       <article id="result" class="result" aria-live="polite"></article>
     </section>
     <section class="principles">
-      <h2>Cómo protege la trazabilidad</h2>
-      <div class="grid"><article><h3>Recuperación separada</h3><p>Busca hasta dos bugs y dos test cases mediante filtros explícitos.</p></article>
-      <article><h3>Evidence-only</h3><p>Cada ID citado debe existir en los chunks recuperados.</p></article>
-      <article><h3>Abstención</h3><p>Si la evidencia no alcanza, devuelve una respuesta segura y auditable.</p></article></div>
+      <h2>How it protects traceability</h2>
+      <div class="grid"><article><h3>Separate retrieval</h3><p>Finds up to two bugs and two test cases through explicit filters.</p></article>
+      <article><h3>Evidence only</h3><p>Every cited ID must exist in the retrieved chunks.</p></article>
+      <article><h3>Abstention</h3><p>When evidence is insufficient, it returns a safe, auditable answer.</p></article></div>
     </section>
   </main>
-  <footer>Proyecto académico · Datos completamente ficticios</footer>
+  <footer>Academic project · Entirely fictional data</footer>
   <script src="demo-data.js"></script><script src="app.js"></script>
 </body>
 </html>

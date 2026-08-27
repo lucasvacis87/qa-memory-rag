@@ -26,3 +26,16 @@ Validación real realizada el 16 de agosto de 2026:
 - La consulta fuera de dominio sobre cultivo devolvió abstención y cero chunks.
 - CI en `main` y despliegue de GitHub Pages finalizaron correctamente.
 - Demo pública: <https://lucasvacis87.github.io/qa-memory-rag/>.
+
+### Migración LangChain — 17 de agosto de 2026
+
+- Entorno recreado con Python 3.13 y dependencias verificadas mediante `pip check`.
+- Suite offline completa: 29 tests aprobados sin llamadas de red.
+- Versiones verificadas: `langchain==1.3.14`, `langchain-openai==1.4.1`,
+  `langchain-chroma==1.1.0`, `chromadb==1.5.9` y `openai==2.54.0`.
+- Indexación real mediante `OpenAIEmbeddings` y `langchain-chroma`: 37 chunks con
+  `text-embedding-3-small`, 7.119 tokens y costo estimado de USD 0,00014238.
+- Consulta real mediante `ChatPromptTemplate`, `ChatOpenAI`, Responses API y Structured
+  Outputs: recuperó `BUG-TRF-001`, `TC-TRF-004` y `TC-TRF-007` como evidencia principal.
+- Evaluación de la consulta: 10/10, IDs válidos, evidencia esperada presente y contrato JSON
+  limitado a `user_question`, `system_answer` y `chunks_related`.
