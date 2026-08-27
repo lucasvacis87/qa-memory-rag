@@ -1,34 +1,34 @@
 # QA Memory RAG
 
-RAG educativo aplicado a memoria histórica de QA para un banco digital ficticio. Recibe una
-situación, recupera bugs y test cases existentes y devuelve una recomendación trazable. Si la
-evidencia no alcanza, se abstiene.
+An educational RAG project that applies historical QA knowledge to a fictional digital bank.
+Given a situation, it retrieves existing bug reports and test cases, then returns a traceable
+recommendation. It abstains when the evidence is insufficient.
 
-## Qué entrega
+## What it delivers
 
-- Fuente UTF-8 de 3.600+ palabras: 15 bugs, 22 test cases y seis módulos.
-- Un chunk completo por registro con metadata técnica *evidence-only*.
-- Embeddings `text-embedding-3-small` mediante LangChain y colección Chroma local con similitud coseno.
-- Hasta dos bugs y dos test cases por consulta.
-- Orquestación LangChain con Responses API, Structured Outputs y `gpt-5.4-nano`.
-- JSON con exactamente `user_question`, `system_answer` y `chunks_related`.
-- Tests offline, evaluador determinístico, ejemplos y [demo estática](https://lucasvacis87.github.io/qa-memory-rag/).
+- A 3,600+ word UTF-8 source with 15 bugs, 22 test cases, and six modules.
+- One complete chunk per record, with *evidence-only* technical metadata.
+- `text-embedding-3-small` embeddings through LangChain and a local Chroma collection using cosine similarity.
+- Up to two bugs and two test cases retrieved per query.
+- LangChain orchestration with the Responses API, Structured Outputs, and `gpt-5.4-nano`.
+- JSON with exactly `user_question`, `system_answer`, and `chunks_related`.
+- Offline tests, a deterministic evaluator, versioned examples, and a [static demo](https://lucasvacis87.github.io/qa-memory-rag/).
 
-## Flujo de construcción y consulta del RAG
+## RAG indexing and query flow
 
-El sistema separa la **indexación** de la **consulta**. Primero transforma la fuente en
-representaciones vectoriales persistentes; después convierte cada pregunta al mismo espacio
-vectorial, recupera evidencia relevante y recién entonces permite que el LLM redacte la respuesta.
+The system keeps **indexing** and **querying** separate. It first transforms the source into
+persistent vector representations. Later, it converts a question into the same vector space,
+retrieves relevant evidence, and only then allows the LLM to compose an answer.
 
 ```mermaid
 flowchart TD
-    subgraph INDEX["1. Pipeline de indexación"]
-        A["Documento fuente UTF-8<br/>15 bugs + 22 test cases"]
-        B["Parsing y validación<br/>estructura, IDs y relaciones"]
-        C["Chunking semántico<br/>1 registro QA = 1 chunk completo"]
-        D["Mapeo de metadata<br/>tipo, módulo, relaciones y evidencia"]
+    subgraph INDEX["1. Indexing pipeline"]
+        A["UTF-8 source document<br/>15 bugs + 22 test cases"]
+        B["Parsing and validation<br/>structure, IDs, and relationships"]
+        C["Semantic chunking<br/>1 QA record = 1 complete chunk"]
+        D["Metadata mapping<br/>type, module, relationships, and evidence"]
         E["LangChain OpenAIEmbeddings<br/>text-embedding-3-small"]
-        F[("langchain-chroma + ChromaDB<br/>37 vectores + chunks + metadata")]
+        F[("langchain-chroma + ChromaDB<br/>37 vectors + chunks + metadata")]
 
         A --> B --> C --> D
         C --> E
@@ -36,52 +36,52 @@ flowchart TD
         E --> F
     end
 
-    subgraph QUERY["2. Pipeline de consulta RAG"]
-        G["Pregunta del usuario"]
-        H["Embedding de la consulta<br/>mismo modelo y dimensionalidad"]
-        I["Búsqueda vectorial ANN<br/>similitud coseno + umbral"]
-        J["Recuperación top-k por tipo<br/>hasta 2 bugs + 2 test cases"]
-        K{"¿Hay evidencia<br/>suficiente?"}
-        L["Armado del contexto<br/>sólo chunks recuperados"]
+    subgraph QUERY["2. Query pipeline"]
+        G["User question"]
+        H["Query embedding<br/>same model and dimensionality"]
+        I["ANN vector search<br/>cosine similarity + threshold"]
+        J["Top-k retrieval by type<br/>up to 2 bugs + 2 test cases"]
+        K{"Is there sufficient<br/>evidence?"}
+        L["Context assembly<br/>retrieved chunks only"]
         M["ChatPromptTemplate + ChatOpenAI<br/>Responses API + Structured Outputs"]
-        N{"Guardrail determinístico<br/>¿todos los IDs fueron recuperados?"}
-        O["JSON trazable<br/>user_question<br/>system_answer<br/>chunks_related"]
-        P["Abstención segura"]
+        N{"Deterministic guardrail<br/>were all cited IDs retrieved?"}
+        O["Traceable JSON<br/>user_question<br/>system_answer<br/>chunks_related"]
+        P["Safe abstention"]
 
         G --> H --> I --> J --> K
-        K -- Sí --> L --> M --> N
+        K -- Yes --> L --> M --> N
         K -- No --> P --> O
-        N -- Sí --> O
+        N -- Yes --> O
         N -- No --> P
     end
 
     F --> I
 ```
 
-El **chunking** conserva cada registro QA completo para no separar el ID de sus pasos,
-relaciones y evidencia. El **mapeo de metadata** agrega campos filtrables y trazables al chunk.
-Los **embeddings** convierten chunks y preguntas en vectores comparables. `langchain-chroma`
-conecta el pipeline con ChromaDB, que persiste la **base vectorial** y ejecuta recuperación ANN
-con distancia coseno. `ChatPromptTemplate` arma el contexto y `ChatOpenAI` llama explícitamente
-a Responses API con salida estructurada. El **LLM** no consulta la fuente completa: recibe
-solamente los chunks recuperados. Finalmente, una validación Python ajena al modelo bloquea
-IDs no presentes y fuerza una abstención si la respuesta no está fundamentada.
+**Chunking** keeps each QA record intact, so its ID, steps, relationships, and evidence are
+never separated. **Metadata mapping** adds filterable and traceable fields to each chunk.
+**Embeddings** transform records and questions into comparable vectors. `langchain-chroma`
+connects the pipeline to ChromaDB, which persists the **vector database** and performs ANN
+retrieval using cosine distance. `ChatPromptTemplate` assembles the context, and `ChatOpenAI`
+calls the Responses API with structured output. The **LLM** never receives the full source; it
+only receives retrieved chunks. Finally, Python validation outside the model blocks IDs that
+were not retrieved and forces abstention when an answer is not evidence-based.
 
-### Responsabilidades de las tecnologías
+### Technology responsibilities
 
-| Tecnología | Responsabilidad |
+| Technology | Responsibility |
 | --- | --- |
-| Python | CLI, configuración, modelos de dominio, guardrails y contrato JSON. |
-| LangChain | Interfaces y composición del pipeline de embeddings, recuperación, prompt y generación. |
-| OpenAI | Embeddings semánticos y redacción estructurada con el modelo configurado. |
-| ChromaDB | Persistencia local y búsqueda vectorial filtrada por tipo de registro. |
-| tiktoken | Estimación separada de tokens y costos. |
-| pytest | Validación offline mediante embeddings y respuestas determinísticas. |
+| Python | CLI, configuration, domain models, guardrails, and the JSON contract. |
+| LangChain | Interfaces and composition for embeddings, retrieval, prompts, and generation. |
+| OpenAI | Semantic embeddings and structured generation with the configured model. |
+| ChromaDB | Local persistence and vector search filtered by record type. |
+| tiktoken | Separate token and cost estimation. |
+| pytest | Offline validation with deterministic embeddings and responses. |
 
-## Requisitos e instalación
+## Requirements and setup
 
-- Python 3.12 o 3.13.
-- Una API key de OpenAI con saldo y acceso a los modelos configurados.
+- Python 3.12 or 3.13.
+- An OpenAI API key with available credit and access to the configured models.
 
 ```powershell
 python -m venv .venv
@@ -90,58 +90,58 @@ python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Editá `.env` localmente y reemplazá `OPENAI_API_KEY`. Los modelos predeterminados ya están
-configurados; podés cambiarlos si tu cuenta no tiene acceso. El archivo está ignorado por Git.
-No compartas la clave por chat, capturas, logs ni commits.
+Edit `.env` locally and set `OPENAI_API_KEY`. The default models are already configured, but
+you can change them if your account does not have access. The file is ignored by Git. Never
+share the key in chat, screenshots, logs, or commits.
 
-`build-index` y `query` usan OpenAI y pueden generar costo. La validación, los tests, la
-generación de muestras y la demo funcionan sin API key, red ni consumo.
+`build-index` and `query` use OpenAI and can incur cost. Source validation, tests, sample
+generation, and the static demo work without an API key, network access, or API usage.
 
-## Uso
+## Usage
 
 ```powershell
 python -m src.cli validate-source
 python -m src.cli build-index
-python -m src.cli query "Una transferencia rechazada descontó el saldo" --evaluate
+python -m src.cli query "A rejected transfer deducted the balance" --evaluate
 python -m pytest -q
 python scripts/generate_samples.py
 python -m http.server 8000 --directory docs
 ```
 
-La indexación informa cantidad de chunks, tokens estimados y costo estimado. El costo de
-embeddings se calcula aparte de la generación. Los precios de referencia están centralizados
-en `src/pricing.py` y conviene verificarlos antes de ejecutar llamadas pagas.
+Indexing reports the chunk count, estimated tokens, and estimated cost. Embedding cost is
+calculated separately from generation. Reference prices are centralized in `src/pricing.py`
+and should be checked before making paid API calls.
 
-## Estructura
+## Project structure
 
 ```text
-data/faq_document.txt       fuente ficticia
-src/source.py               parser y validación
-src/index.py                langchain-chroma, persistencia y recuperación
-src/providers.py            LangChain, OpenAI y dobles offline
-src/rag.py                  pipeline y guardrail de IDs
-src/evaluation.py           evaluador determinístico
-src/cli.py                  consola
-outputs/sample_queries.json ejemplos versionados
-docs/                       arquitectura y demo pública
-tests/                      suite sin consumo de API
+data/faq_document.txt       fictional source data
+src/source.py               parser and validation
+src/index.py                langchain-chroma, persistence, and retrieval
+src/providers.py            LangChain, OpenAI, and offline test doubles
+src/rag.py                  pipeline and ID guardrail
+src/evaluation.py           deterministic evaluator
+src/cli.py                  command-line interface
+outputs/sample_queries.json versioned examples
+docs/                       architecture and public demo
+tests/                      test suite with no API usage
 ```
 
-## Seguridad y límites
+## Security and scope
 
-Todo el contenido de negocio es ficticio. El sistema no genera bugs ni casos nuevos, no usa
-datos bancarios reales y no publica un backend. La demo contiene resultados precalculados y
-no realiza llamadas a OpenAI. Un smoke sólo puede aparecer como sugerencia derivada de la
-evidencia; nunca se presenta como test case histórico.
+All business content is fictional. The system does not generate new bugs or test cases, does
+not use real banking data, and does not expose a public backend. The demo uses precomputed
+results and makes no OpenAI calls. A suggested smoke test is always marked as a suggestion
+derived from evidence; it is never presented as a historical test case.
 
-La intención está resumida en [PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md), los límites en
-[GUARDRAILS.md](docs/GUARDRAILS.md), la arquitectura en [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-y la consigna académica en [Consignas_proyecto.md](Consignas_proyecto.md).
+The intent is documented in [PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md), the boundaries in
+[GUARDRAILS.md](docs/GUARDRAILS.md), the architecture in [ARCHITECTURE.md](docs/ARCHITECTURE.md),
+and the original academic brief in [Consignas_proyecto.md](Consignas_proyecto.md).
 
 ## Troubleshooting
 
-- `El índice no existe`: ejecutá `build-index` con la misma configuración.
-- `401`: revisá sólo tu `.env` local; nunca imprimas la key.
-- `429` o cuota: verificá saldo/límites y no cambies de modelo automáticamente.
-- Modelo sin acceso: conservá el error y elegí otro modelo sólo mediante una decisión explícita.
-- Entorno virtual roto: recrealo con el Python instalado; no reutilices rutas de una instalación eliminada.
+- `The index does not exist`: run `build-index` with the same configuration.
+- `401`: inspect only your local `.env`; never print the key.
+- `429` or quota errors: check your balance and limits; do not switch models automatically.
+- Model access error: preserve the error and select a different model only through an explicit decision.
+- Broken virtual environment: recreate it with an installed Python version; do not reuse paths from a removed installation.
